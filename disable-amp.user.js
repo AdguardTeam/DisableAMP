@@ -3,6 +3,9 @@
 // @namespace    adguard
 // @version      1.0.0
 // @description  This is a very simple userscript that disables AMP pages on the Google search results page.
+// @downloadURL  https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.user.js
+// @updateURL    https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.meta.js
+// @homepageURL  https://adguard.com/
 // @author       AdGuard
 // @match        https://www.google.*/*
 // @grant        none
