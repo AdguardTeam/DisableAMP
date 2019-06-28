@@ -6,3 +6,4 @@ TODO:
 
 * [ ] Use a proper build script and babelize the output
 * [ ] Fix AMP on Google images
+* [ ] Localization
