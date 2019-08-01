@@ -1,0 +1,39 @@
+{
+    "name": "disable-amp",
+    "version": "1.0.2",
+    "author": "adguard@adguard.com",
+    "license": "LGPL-3.0",
+    "scripts": {
+        "dev": "NODE_ENV=DEV webpack",
+        "beta": "NODE_ENV=BETA webpack",
+        "release": "NODE_ENV=RELEASE webpack",
+        "lint": "eslint ./src",
+        "locales:download": "LOCALES=DOWNLOAD node locales.js",
+        "locales:upload": "LOCALES=UPLOAD node locales.js"
+    },
+    "browserslist": [
+        "ie 11"
+    ],
+    "devDependencies": {
+        "@babel/core": "^7.5.4",
+        "@babel/preset-env": "^7.5.4",
+        "axios": "^0.19.0",
+        "babel-loader": "^8.0.6",
+        "clean-webpack-plugin": "^3.0.0",
+        "concat": "^1.0.3",
+        "copy-webpack-plugin": "^5.0.4",
+        "cp-file": "^7.0.0",
+        "eslint": "^6.0.1",
+        "eslint-config-airbnb": "^17.1.1",
+        "eslint-plugin-import": "^2.18.0",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-react": "^7.14.2",
+        "form-data": "^2.5.0",
+        "fs-extra": "^8.1.0",
+        "glob": "^7.1.4",
+        "html-webpack-plugin": "^3.2.0",
+        "replace-in-file": "^4.1.1",
+        "webpack": "^4.35.3",
+        "webpack-cli": "^3.3.5"
+    }
+}
