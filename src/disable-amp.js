@@ -26,8 +26,5 @@ function preventAmp() {
     });
 }
 
-
-console.log('run');
-
 preventAmp();
 observeDomChanges(preventAmp);
