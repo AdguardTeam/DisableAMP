@@ -1,6 +1,7 @@
 # Disable AMP by AdGuard
 
 This is a very simple userscript that disables AMP pages on the Google search results page.
+Open Google search results on mobile phone, click on the link marked as AMP. This link should be opened without AMP.
 
 ## Run build
 `yarn install`
