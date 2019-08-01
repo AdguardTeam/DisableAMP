@@ -1,4 +1,4 @@
-const expando = '__' + Math.random();
+const expando = `__${Math.random()}`;
 
 function observeDomChanges(callback) {
     new MutationObserver(callback).observe(document, {
@@ -8,22 +8,26 @@ function observeDomChanges(callback) {
 }
 
 function preventAmp() {
-    let elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
+    const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
         if (el[expando]) {
             return;
-        } else {
-            el[expando] = true;
         }
+
+        // eslint-disable-next-line no-param-reassign
+        el[expando] = true;
 
         el.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            let url = el.getAttribute('data-amp-cur');
+            const url = el.getAttribute('data-amp-cur');
             document.location.replace(url);
         }, true);
     });
 }
+
+
+console.log('run');
 
 preventAmp();
 observeDomChanges(preventAmp);
