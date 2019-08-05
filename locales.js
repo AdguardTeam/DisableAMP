@@ -10,7 +10,7 @@ const BASE_DOWNLOAD_URL = `${BASE_URL}/download`;
 const BASE_UPLOAD_URL = `${BASE_URL}/upload`;
 const CROWDIN_PROJECT = 'disable-amp';
 const CROWDIN_FILES = ['messages.json']; // crowdin files for downloading/uploading
-const LOCALES = [BASE_LOCALE]; // locales for downloading
+const LOCALES = [BASE_LOCALE, 'ru']; // locales for downloading
 const LOCALES_DIR = './locales';
 
 
@@ -25,6 +25,32 @@ const getQueryString = (lang, file) => {
     res += `&project=${CROWDIN_PROJECT}`;
     res += `&filename=${file}`;
     return res;
+};
+
+/**
+ * Iterates over translation object and removes keys with empty values
+ *
+ * For some reasons "Skip untranslated strings" option does not work properly with json files
+ * and Crowdin returns translations with empty string.
+ * Here we exclude such translations to keep changeset clear.
+ *
+ * @param {Object} data translation
+ */
+const removeEmptyStrings = (data) => {
+    const result = {};
+    Object.entries(data).forEach(([key, value]) => {
+        if (typeof value === 'string') {
+            if (value !== '') {
+                result[key] = value;
+            }
+        } else if (typeof value === 'object') {
+            // eslint-disable-next-line dot-notation
+            if (value['message'] !== '') {
+                result[key] = value;
+            }
+        }
+    });
+    return result;
 };
 
 /**
@@ -68,7 +94,8 @@ function download() {
             try {
                 const { data } = await axios.get(getDownloadlURL(lang, file));
                 const filePath = path.resolve(LOCALES_DIR, lang, `${file}`);
-                saveFile(filePath, data);
+                const formatted = removeEmptyStrings(data);
+                saveFile(filePath, formatted);
             } catch (e) {
                 console.log(getDownloadlURL(lang, file));
                 console.log(e.message);
