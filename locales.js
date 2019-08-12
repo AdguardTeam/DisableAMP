@@ -10,7 +10,7 @@ const BASE_DOWNLOAD_URL = `${BASE_URL}/download`;
 const BASE_UPLOAD_URL = `${BASE_URL}/upload`;
 const CROWDIN_PROJECT = 'disable-amp';
 const CROWDIN_FILES = ['messages.json']; // crowdin files for downloading/uploading
-const LOCALES = [BASE_LOCALE, 'ru']; // locales for downloading
+const LOCALES = [BASE_LOCALE, 'pt-BR', 'ru', 'zh-TW', 'ja', 'ko', 'uk']; // locales for downloading
 const LOCALES_DIR = './locales';
 
 /**
