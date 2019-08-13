@@ -3,15 +3,23 @@ const fs = require('fs-extra');
 const path = require('path');
 const axios = require('axios');
 const FormData = require('form-data');
+const twoskyConfig = require('./.twosky.json')[0];
 
-const BASE_LOCALE = 'en';
+// URLs
 const BASE_URL = 'https://twosky.adtidy.org/api/v1';
 const BASE_DOWNLOAD_URL = `${BASE_URL}/download`;
 const BASE_UPLOAD_URL = `${BASE_URL}/upload`;
-const CROWDIN_PROJECT = 'disable-amp';
-const CROWDIN_FILES = ['messages.json']; // crowdin files for downloading/uploading
-const LOCALES = [BASE_LOCALE, 'ru']; // locales for downloading
+// Directory where locales should be stored
 const LOCALES_DIR = './locales';
+// Base locale
+const BASE_LOCALE = twoskyConfig.base_locale;
+// Twosky project see mapping https://twosky.adtidy.org/api/v1/mapping
+const CROWDIN_PROJECT = twoskyConfig.project_id;
+// Available translations list
+const LOCALES = Object.keys(twoskyConfig.languages);
+// Crowdin files for downloading/uploading
+const CROWDIN_FILES = twoskyConfig.localizable_files
+    .map(pathToFile => pathToFile.split('/').pop());
 
 /**
  * Users locale may be defined with only two chars (language code)

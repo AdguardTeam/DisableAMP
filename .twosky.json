@@ -1,0 +1,31 @@
+[
+    {
+        "project_id": "disable-amp",
+        "base_locale": "en",
+        "languages": {
+            "en": "English",
+            "ar": "Arabic",
+            "bg": "Bulgarian",
+            "de": "German",
+            "es": "Spanish",
+            "et": "Estonian",
+            "fa": "Persian",
+            "fr": "French",
+            "id": "Indonesian",
+            "ja": "Japanese",
+            "ko": "Korean",
+            "lt": "Lithuanian",
+            "pl": "Polish",
+            "pt-BR": "Portuguese (Brazil)",
+            "ro": "Romanian",
+            "ru": "Russian",
+            "uk": "Ukrainian",
+            "vi": "Vietnamese",
+            "zh-CN": "Chinese Simplified (mainland China)",
+            "zh-TW": "Chinese Traditional (Taiwan)"
+        },
+        "localizable_files": [
+            "locales/en/messages.json"
+        ]
+    }
+]

@@ -169,7 +169,7 @@ function createMetadata(compilation, callback, options) {
  * @param {Object} compilation Webpack compilation object
  * @param {Object} options passed to plugin constructor options
  */
-function concatMetaWithOutput(compilation, options) {
+function concatMetaWithOutput(compilation, options, callback) {
     const { filename } = options;
     const metadataOutputPath = path.join(compilation.outputOptions.path, filename);
 
@@ -179,6 +179,8 @@ function concatMetaWithOutput(compilation, options) {
             concat([metadataOutputPath, chunkOutputPath], chunkOutputPath);
         });
     });
+
+    callback();
 }
 
 /**
@@ -232,7 +234,7 @@ class MetaDataPlugin {
             (compilation, callback) => createMetadata(compilation, callback, this.options));
 
         compiler.hooks.done.tapAsync(PLUGIN_NAME,
-            ({ compilation }) => concatMetaWithOutput(compilation, this.options));
+            ({ compilation }, callback) => concatMetaWithOutput(compilation, this.options, callback));
     }
 }
 
