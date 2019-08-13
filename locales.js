@@ -18,7 +18,8 @@ const CROWDIN_PROJECT = twoskyConfig.project_id;
 // Available translations list
 const LOCALES = Object.keys(twoskyConfig.languages);
 // Crowdin files for downloading/uploading
-const CROWDIN_FILES = Array.map(pathToFile => pathToFile.split('/').pop());
+const CROWDIN_FILES = twoskyConfig.localizable_files
+    .map(pathToFile => pathToFile.split('/').pop());
 
 /**
  * Users locale may be defined with only two chars (language code)
