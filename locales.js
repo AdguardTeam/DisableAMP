@@ -3,14 +3,15 @@ const fs = require('fs-extra');
 const path = require('path');
 const axios = require('axios');
 const FormData = require('form-data');
+const twoskyConfig = require('./.twosky.json')[0];
 
-const BASE_LOCALE = 'en';
+const BASE_LOCALE = twoskyConfig.baseLocale;
 const BASE_URL = 'https://twosky.adtidy.org/api/v1';
 const BASE_DOWNLOAD_URL = `${BASE_URL}/download`;
 const BASE_UPLOAD_URL = `${BASE_URL}/upload`;
-const CROWDIN_PROJECT = 'disable-amp';
+const CROWDIN_PROJECT = twoskyConfig.projectId;
 const CROWDIN_FILES = ['messages.json']; // crowdin files for downloading/uploading
-const LOCALES = [BASE_LOCALE, 'ar', 'bg', 'de', 'et', 'fa', 'fr', 'id', 'ja', 'ko', 'lt', 'pl', 'pt-BR', 'ro', 'ru', 'uk', 'vi', 'zh-TW', 'zh-CN']; // locales for downloading
+const LOCALES = Object.keys(twoskyConfig.languages);
 const LOCALES_DIR = './locales';
 
 /**
