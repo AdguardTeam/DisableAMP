@@ -1,9 +1,13 @@
 # Disable AMP by AdGuard
 
-This is a very simple userscript that disables AMP pages on the Google search results page.
-Open Google search results on mobile phone, click on the link marked as AMP. This link should be opened without AMP.
+This is a very simple userscript that disables AMP pages on the Google search results page. Open Google search results on a mobile phone, click on the link marked as AMP. This link should be opened without AMP.
 
-## Run build
+## How to install
+
+* [AdGuard for Android](https://adguard.com/en/adguard-android/overview.html) has this userscript pre-installed (disabled by default).
+* You can use Violentmonkey, Tampermonkey, Greasemonkey or any other userscript host.
+
+## How to build
 `yarn install`
 
 | Command           | Output Dir    |
@@ -14,7 +18,7 @@ Open Google search results on mobile phone, click on the link marked as AMP. Thi
 
 
 ---
-## Metadata
+### Metadata
 
 _Placeholder_ - string in format `[PLACEHOLDER_NAME]` which will be replaced with metadata field.
 
@@ -23,7 +27,7 @@ _Field_ or _Metadata field_ - result string of metadata, e.g:
 // @description:en Userscript description text  
 ```
 
-### How to change?
+#### How to change?
 
 Remove, add or replace placeholders in file `meta.template.js`.
 
@@ -90,29 +94,29 @@ const releaseChannels = {
 
 ---
 
-## Translations
+### Translations
 
 - add needed locales codes to `const LOCALES = ['en', 'ru'];` array
 - run `yarn locales:download` to download translations
 - run `yarn locales:upload` to update current tranlations in Crowdin
 
 
-## Run tests
+### Run tests
 
 `yarn test`
 
-### How to add new one?
+#### How to add new one?
 
 - Add new file with tests in directory `./tests`
 - Add `import './path-to-your-file'` in `index.test.js`
 
 ---
 
-## Run linter
+### Run linter
 `yarn lint`
 
 ---
 
-## TODO:
+### TODO:
 
 * [ ] Fix AMP on Google images
