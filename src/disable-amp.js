@@ -7,7 +7,18 @@ function observeDomChanges(callback) {
     });
 }
 
+/**
+ * Hide AMP icons in google search results
+ */
+const hideAmpIcons = () => {
+    const ampIcons = document.querySelectorAll('[aria-label="AMP logo"]');
+    [...ampIcons].forEach((icon) => {
+        icon.style.display = 'none';
+    })
+};
+
 function preventAmp() {
+    hideAmpIcons();
     const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
         if (el[expando]) {
