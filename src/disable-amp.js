@@ -8,17 +8,17 @@ function observeDomChanges(callback) {
 }
 
 /**
- * Hide AMP icons in google search results
+ * Hide AMP icon for AMP element in google search results
+ * @param amp element
  */
-const hideAmpIcons = () => {
-    const ampIcons = document.querySelectorAll('[aria-label="AMP logo"]');
-    [...ampIcons].forEach((icon) => {
-        icon.style.display = 'none';
-    })
+const hideAmpIcon = (amp) => {
+    const ampIcon = amp.querySelector('[aria-label="AMP logo"]');
+    if (ampIcon) {
+        ampIcon.style.display = 'none';
+    }
 };
 
 function preventAmp() {
-    hideAmpIcons();
     const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
         if (el[expando]) {
@@ -34,6 +34,7 @@ function preventAmp() {
             const url = el.getAttribute('data-amp-cur');
             document.location.replace(url);
         }, true);
+        hideAmpIcon(el);
     });
 }
 
