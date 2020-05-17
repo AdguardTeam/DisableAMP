@@ -25,14 +25,14 @@ const releaseChannels = {
     beta: {
         postfix: 'Beta',
         fields: {
-            DOWNLOAD_URL: 'https://userscripts.adtidy.org/beta/disable-amp/1.0/disable-amp.user.js',
-            UPDATE_URL: 'https://userscripts.adtidy.org/beta/disable-amp/1.0/disable-amp.meta.js',
+            DOWNLOAD_URL: '',
+            UPDATE_URL: '',
         },
     },
     release: {
         fields: {
-            DOWNLOAD_URL: 'https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.user.js',
-            UPDATE_URL: 'https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.meta.js',
+            DOWNLOAD_URL: '',
+            UPDATE_URL: '',
         },
     },
 };
