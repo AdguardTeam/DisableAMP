@@ -21,7 +21,7 @@ function preventAmp() {
             e.preventDefault();
             e.stopPropagation();
             const url = el.getAttribute('data-amp-cur');
-            document.location.replace(url);
+            document.location.href = url;
         }, true);
     });
 }
