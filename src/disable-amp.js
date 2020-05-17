@@ -8,8 +8,6 @@ function observeDomChanges(callback) {
 }
 
 function preventAmp() {
-    document.querySelector('[aria-label="Logo AMP"]').remove();
-    
     const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
         if (el[expando]) {
