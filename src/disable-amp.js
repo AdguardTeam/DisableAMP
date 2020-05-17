@@ -7,6 +7,17 @@ function observeDomChanges(callback) {
     });
 }
 
+/**
+ * Hide AMP icon for AMP element in google search results
+ * @param amp element
+ */
+const hideAmpIcon = (amp) => {
+    const ampIcon = amp.querySelector('[aria-label="AMP logo"]');
+    if (ampIcon) {
+        ampIcon.style.display = 'none';
+    }
+};
+
 function preventAmp() {
     const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
@@ -23,6 +34,7 @@ function preventAmp() {
             const url = el.getAttribute('data-amp-cur');
             document.location.href = url;
         }, true);
+        hideAmpIcon(el);
     });
 }
 
