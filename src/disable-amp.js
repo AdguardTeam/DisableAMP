@@ -12,10 +12,12 @@ function observeDomChanges(callback) {
  * @param amp element
  */
 const hideAmpIcon = (amp) => {
-    const ampIcon = amp.querySelector('[aria-label="Logo AMP"]');
-    if (ampIcon) {
-        ampIcon.style.display = 'none';
-    }
+    const ampIcon = amp.querySelectorAll('[aria-label="Logo AMP"], [aria-label="AMP logo"]');
+    [...ampIcon].forEach((el) => {
+        if (el) {
+            el.style.display = 'none';
+        }
+    });
 };
 
 function preventAmp() {
