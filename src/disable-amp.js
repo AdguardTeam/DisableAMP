@@ -11,7 +11,7 @@ function observeDomChanges(callback) {
 function avoidPersistance() {
     const url = document.URL;
     if(url.includes("/amp/")) {
-      document.location.href = url.substring(0, url.indexOf("amp/")) + "?nonamp=1";
+      document.location.replace(url.substring(0, url.indexOf("amp/")) + "?nonamp=1");
     }
 }
 
