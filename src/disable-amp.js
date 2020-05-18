@@ -12,7 +12,7 @@ function observeDomChanges(callback) {
  * @param amp element
  */
 const hideAmpIcon = (amp) => {
-    const ampIcon = amp.querySelector('[aria-label="Logo AMP"]');
+    const ampIcon = amp.querySelector('[aria-label="AMP logo"], [aria-label="Logo AMP"]');
     if (ampIcon) {
         ampIcon.style.display = 'none';
     }
