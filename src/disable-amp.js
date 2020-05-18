@@ -14,7 +14,7 @@ function observeDomChanges(callback) {
 const hideAmpIcon = (amp) => {
     const ampIcon = amp.querySelector('[aria-label="Logo AMP"]');
     if (ampIcon) {
-        ampIcon.remove();
+        ampIcon.style.display = 'none';
     }
 };
 
