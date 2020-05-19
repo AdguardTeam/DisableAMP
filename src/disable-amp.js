@@ -7,17 +7,19 @@ function observeDomChanges(callback) {
     });
 }
 
-// redirect "/amp/" website to a stripped version
+/**
+ * Redirects "/amp/" website to a stripped version
+ */
 function avoidPersistance() {
     const url = document.URL;
-    if(url.includes("/amp/")) {
+    if (url.includes("/amp/")) {
       document.location.replace(url.substring(0, url.indexOf("amp/")) + "?nonamp=1");
     }
 }
 
 function preventAmp() {
     avoidPersistance();
-    
+
     const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
         if (el[expando]) {
@@ -31,6 +33,7 @@ function preventAmp() {
             e.preventDefault();
             e.stopPropagation();
             const url = el.getAttribute('data-amp-cur');
+            // https://github.com/AdguardTeam/DisableAMP/pull/15
             document.location.href = url;
         }, true);
     });
