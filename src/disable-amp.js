@@ -17,6 +17,17 @@ function avoidPersistance() {
     }
 }
 
+/**
+ * Hide AMP icon for AMP element in google search results
+ * @param amp element
+ */
+const hideAmpIcon = (amp) => {
+    const ampIcon = amp.querySelector('[aria-label="AMP logo"], [aria-label="Logo AMP"]');
+    if (ampIcon) {
+        ampIcon.style.display = 'none';
+    }
+};
+
 function preventAmp() {
     avoidPersistance();
 
@@ -36,6 +47,7 @@ function preventAmp() {
             // https://github.com/AdguardTeam/DisableAMP/pull/15
             document.location.href = url;
         }, true);
+        hideAmpIcon(el);
     });
 }
 
