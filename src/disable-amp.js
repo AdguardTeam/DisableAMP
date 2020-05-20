@@ -10,11 +10,9 @@ function observeDomChanges(callback) {
 /**
  * Redirects "/amp/" website to a stripped version
  */
-function avoidPersistance() {
-    const url = document.URL;
-    if (url.includes("/amp/")) {
-      document.location.replace(url.substring(0, url.indexOf("amp/")) + "?nonamp=1");
-    }
+const persistentURL = document.URL;
+if (persistentURL.includes("/amp/")) {
+    document.location.replace(persistentURL.substring(0, persistentURL.indexOf("amp/")) + "?nonamp=1");
 }
 
 /**
@@ -53,5 +51,7 @@ function preventAmp() {
     });
 }
 
-preventAmp();
-observeDomChanges(preventAmp);
+if (document.URL.includes("google")) {
+    preventAmp();
+    observeDomChanges(preventAmp);
+}
