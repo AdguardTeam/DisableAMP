@@ -40,10 +40,12 @@ function preventAmp() {
         // eslint-disable-next-line no-param-reassign
         el[expando] = true;
 
+        const url = el.getAttribute('data-amp-cur');
+        el.setAttribute('href', url);
+
         el.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            const url = el.getAttribute('data-amp-cur');
             // https://github.com/AdguardTeam/DisableAMP/pull/15
             document.location.href = url;
         }, true);
