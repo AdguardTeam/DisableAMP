@@ -11,7 +11,7 @@ function observeDomChanges(callback) {
  * Redirects "/amp/" website to a stripped version
  */
 const persistentURL = document.URL;
-if (persistentURL.includes("/amp/")) {
+if (persistentURL.endsWith("/amp/")) {
     document.location.replace(persistentURL.substring(0, persistentURL.indexOf("amp/")) + "?nonamp=1");
 }
 
