@@ -25,7 +25,6 @@ const hideAmpIcon = (amp) => {
 };
 
 function preventAmp() {
-
     const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
         if (el[expando]) {
