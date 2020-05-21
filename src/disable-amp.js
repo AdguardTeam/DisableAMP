@@ -7,9 +7,7 @@ function observeDomChanges(callback) {
     });
 }
 
-/**
- * Redirects "/amp/" website to a stripped version
- */
+// Redirects "/amp/" website to a stripped version
 const persistentURL = document.URL;
 if (persistentURL.endsWith("/amp/")) {
     document.location.replace(persistentURL.substring(0, persistentURL.indexOf("amp/")) + "?nonamp=1");
@@ -27,7 +25,6 @@ const hideAmpIcon = (amp) => {
 };
 
 function preventAmp() {
-    avoidPersistance();
 
     const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
     [...elements].forEach((el) => {
