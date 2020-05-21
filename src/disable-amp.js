@@ -36,7 +36,7 @@ function preventAmp() {
         el[expando] = true;
 
         const url = el.getAttribute('data-amp-cur');
-        el.setAttribute('href', url);
+        el.setAttribute('ping', url);
 
         el.addEventListener('click', (e) => {
             e.preventDefault();
