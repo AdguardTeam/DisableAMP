@@ -51,7 +51,7 @@ function preventAmp() {
     });
 }
 
-if (document.URL.includes("google")) {
+if (location.origin.includes(".google.")) {
     preventAmp();
     observeDomChanges(preventAmp);
 }
