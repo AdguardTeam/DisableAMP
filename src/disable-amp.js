@@ -7,12 +7,6 @@ function observeDomChanges(callback) {
     });
 }
 
-// Redirects "/amp/" website to a stripped version
-const persistentURL = document.URL;
-if (persistentURL.endsWith("/amp/")) {
-    document.location.replace(persistentURL.substring(0, persistentURL.indexOf("amp/")) + "?nonamp=1");
-}
-
 /**
  * Hide AMP icon for AMP element in google search results
  * @param amp element
@@ -35,7 +29,7 @@ function preventAmp() {
         el[expando] = true;
 
         const url = el.getAttribute('data-amp-cur');
-        el.setAttribute('ping', url);
+        el.setAttribute('href', url);
 
         el.addEventListener('click', (e) => {
             e.preventDefault();
