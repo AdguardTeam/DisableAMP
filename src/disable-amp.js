@@ -41,7 +41,7 @@ function preventAmp() {
     });
 }
 
-if (location.origin.includes(".google.")) {
+if (document.location.origin.includes('.google.')) {
     preventAmp();
     observeDomChanges(preventAmp);
 }
