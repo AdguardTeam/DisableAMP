@@ -29,7 +29,7 @@ function preventAmp() {
         el[expando] = true;
 
         const url = el.getAttribute('data-amp-cur');
-        el.setAttribute('href', url);
+        el.setAttribute('ping', url);
 
         el.addEventListener('click', (e) => {
             e.preventDefault();
@@ -44,4 +44,10 @@ function preventAmp() {
 if (document.location.origin.includes('.google.')) {
     preventAmp();
     observeDomChanges(preventAmp);
+} else {
+    // Redirects "/amp/" website to a stripped versionconst
+    persistentURL = document.URL;
+    if (persistentURL.endsWith("/amp/")) {
+        document.location.replace(persistentURL.substring(0, persistentURL.indexOf("amp/")) + "?nonamp=1");
+    }
 }
