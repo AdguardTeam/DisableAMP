@@ -7,7 +7,7 @@
 // @updateURL    [UPDATE_URL]
 // @homepageURL  https://adguard.com/
 // @author       AdGuard
-// @include      https://www.google.*/*
+// @match *://*/*
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
