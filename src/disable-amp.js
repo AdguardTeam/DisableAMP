@@ -50,7 +50,7 @@ if (document.location.origin.includes('.google.')) {
     [...elements].forEach((el) => {
         const redirectURL = el.getAttribute('href');
         if (redirectURL && redirectURL.endsWith('?nonamp=1')) {
-            document.location.replace(persistentURL);
+            document.location.replace(redirectURL);
         }
     });
 }
