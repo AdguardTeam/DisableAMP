@@ -46,11 +46,8 @@ if (document.location.origin.includes('.google.')) {
     observeDomChanges(preventAmp);
 } else {
     // Redirects "/amp/" website to a stripped version
-    const elements = document.querySelectorAll('a');
-    [...elements].forEach((el) => {
-        const redirectURL = el.getAttribute('href');
-        if (redirectURL && redirectURL.endsWith('?nonamp=1')) {
-            document.location.replace(redirectURL);
-        }
-    });
+    const redirectURL = document.querySelector('a[href$="?nonamp=1"]');
+    if (redirectURL) {
+        document.location.replace(redirectURL);
+    }
 }
