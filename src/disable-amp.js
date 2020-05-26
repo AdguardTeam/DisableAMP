@@ -45,9 +45,12 @@ if (document.location.origin.includes('.google.')) {
     preventAmp();
     observeDomChanges(preventAmp);
 } else {
-    // Redirects "/amp/" website to a stripped versionconst
-    persistentURL = document.URL;
-    if (persistentURL.endsWith("/amp/")) {
-        document.location.replace(persistentURL.substring(0, persistentURL.indexOf("amp/")) + "?nonamp=1");
-    }
+    // Redirects "/amp/" website to a stripped version
+    const elements = document.querySelectorAll('a');
+    [...elements].forEach((el) => {
+        const redirectURL = el.getAttribute('href');
+        if (redirectURL && redirectURL.endsWith('?nonamp=1')) {
+            document.location.replace(persistentURL);
+        }
+    });
 }
