@@ -41,7 +41,5 @@ function preventAmp() {
     });
 }
 
-if (document.location.origin.includes('.google.')) {
-    preventAmp();
-    observeDomChanges(preventAmp);
-}
+preventAmp();
+observeDomChanges(preventAmp);
