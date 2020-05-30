@@ -28,8 +28,13 @@ function preventAmp() {
         // eslint-disable-next-line no-param-reassign
         el[expando] = true;
 
-        const url = el.getAttribute('data-amp-cur');
-        el.setAttribute('href', url);
+        var url = "";
+        if (el.getAttribute('data-amp-cur') != "") {
+            url = el.getAttribute('data-amp-cur');
+            el.setAttribute('href', url);
+        } else {
+            url = el.getAttribute('href');
+        }
 
         el.addEventListener('click', (e) => {
             e.preventDefault();
