@@ -18,27 +18,39 @@ const hideAmpIcon = (amp) => {
     }
 };
 
+/**
+ * Replace href link for AMP element in google search results,
+ * to extend the behaviour of a short click also to long click
+ */
+const newTabContext = (ntc) => {
+    // '/amp/s/' is the univocal tag to invoke an AMP page preview
+    ntc.setAttribute('href', ntc.getAttribute('data-amp').replace("https://", document.location.origin + "/amp/s/").replace("?", "%3f"));
+
+    ntc.setAttribute('data-amp', "");
+    ntc.setAttribute('data-amp-cur', "");
+    ntc.setAttribute('ping', "");
+};
+
 function preventAmp() {
-    const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
-    [...elements].forEach((el) => {
-        if (el[expando]) {
-            return;
-        }
+    if (document.URL.includes("https://www.google.") && document.URL.includes("/amp/s/")) {
+        document.getElementsByTagName("BODY")[0].style.display = "none";
+        window.addEventListener("DOMContentLoaded", function(){
+            document.location.replace(document.getElementById('amp-hdr').getElementsByClassName('amp-cantxt notranslate')[0].textContent);
+        });
+    } else {
+        const elements = document.querySelectorAll('a.amp_r');
+        [...elements].forEach((el) => {
+            if (el[expando]) {
+                return;
+            }
 
-        // eslint-disable-next-line no-param-reassign
-        el[expando] = true;
+            // eslint-disable-next-line no-param-reassign
+            el[expando] = true;
 
-        const url = el.getAttribute('data-amp-cur');
-        el.setAttribute('href', url);
-
-        el.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // https://github.com/AdguardTeam/DisableAMP/pull/15
-            document.location.href = url;
-        }, true);
-        hideAmpIcon(el);
-    });
+            hideAmpIcon(el);
+            newTabContext(el);
+        });
+    }
 }
 
 preventAmp();
