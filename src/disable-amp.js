@@ -42,6 +42,8 @@ function preventAmp() {
         // eslint-disable-next-line no-param-reassign
         el[expando] = true;
 
+        hideAmpIcon(el);
+
         const url = el.getAttribute('data-amp-cur');
         if (!url) {
             return;
@@ -54,7 +56,6 @@ function preventAmp() {
             // https://github.com/AdguardTeam/DisableAMP/pull/15
             document.location.href = url;
         }, true);
-        hideAmpIcon(el);
     });
 }
 
