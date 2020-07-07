@@ -14,10 +14,6 @@ const hideTurboIcon = (turboLink) => {
  */
 const disableTurbo = () => {
     const turboLinks = document.querySelectorAll('a[href^="https://yandex.ru/turbo/s/"]');
-    if (!turboLinks) {
-        return;
-    }
-
     [...turboLinks].forEach((link) => {
         const url = link.href.replace('yandex.ru/turbo/s/', '');
         link.setAttribute('href', url);
