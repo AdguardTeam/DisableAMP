@@ -1,13 +1,6 @@
 const URL_PATTERN_REGEX = /^https?:\/\/.+/i;
 const expando = `__${Math.random()}`;
 
-function observeDomChanges(callback) {
-    new MutationObserver(callback).observe(document, {
-        childList: true,
-        subtree: true,
-    });
-}
-
 /**
  * Hide AMP icon for AMP element in google search results
  * @param amp element
@@ -58,5 +51,4 @@ function preventAmp() {
     });
 }
 
-preventAmp();
-observeDomChanges(preventAmp);
+export default preventAmp;

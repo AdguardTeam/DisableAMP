@@ -17,7 +17,7 @@ const CI_BUILD_CONFIG = 'variables.txt';
 const config = {
     mode: MODE === MODE_TYPES.DEV ? 'development' : 'production',
     entry: {
-        main: path.resolve(__dirname, SOURCE_DIR, 'disable-amp.js'),
+        main: path.resolve(__dirname, SOURCE_DIR, 'index.js'),
     },
     output: {
         path: path.resolve(__dirname, BUILD_DIR, MODE),

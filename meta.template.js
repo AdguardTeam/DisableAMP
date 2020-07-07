@@ -8,6 +8,7 @@
 // @homepageURL  https://adguard.com/
 // @author       AdGuard
 // @include      https://www.google.*/*
+// @include      https://yandex.*/*
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
