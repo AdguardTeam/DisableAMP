@@ -18,8 +18,28 @@ const disableTurbo = () => {
         const url = link.href.replace('yandex.ru/turbo/s/', '');
         link.setAttribute('href', url);
 
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            document.location.href = url;
+        }, true);
+
         hideTurboIcon(link);
     });
 };
 
-export default disableTurbo;
+/**
+ * Redirects from Yandex Turbo page to normal version
+ */
+const redirectTurboPages = () => {
+    const originalUrl = document.location.href.split('turbopages.org/s/').pop();
+    const protocol = document.location.protocol;
+    if (originalUrl && protocol) {
+        document.location.href = `${protocol}//${originalUrl}`;
+    }
+};
+
+export {
+    disableTurbo,
+    redirectTurboPages,
+};
