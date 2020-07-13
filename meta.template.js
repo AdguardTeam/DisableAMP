@@ -8,6 +8,8 @@
 // @homepageURL  https://adguard.com/
 // @author       AdGuard
 // @include      https://www.google.*/*
+// @include      https://yandex.*/*
+// @include      https://*.turbopages.org/*
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
