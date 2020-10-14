@@ -1,5 +1,5 @@
 import { disableTurbo, redirectTurboPages } from './yandex-turbo';
-import disableAmp from  './google-amp';
+import disableAmp from './google-amp';
 
 
 const observeDomChanges = (callback) => {
@@ -7,7 +7,7 @@ const observeDomChanges = (callback) => {
         childList: true,
         subtree: true,
     });
-}
+};
 
 if (document.location.origin.includes('google.')) {
     observeDomChanges(disableAmp);
