@@ -9,7 +9,8 @@
         "release": "NODE_ENV=RELEASE ./node_modules/.bin/webpack",
         "lint": "eslint ./src",
         "locales:download": "LOCALES=DOWNLOAD node locales.js",
-        "locales:upload": "LOCALES=UPLOAD node locales.js"
+        "locales:upload": "LOCALES=UPLOAD node locales.js",
+        "ci:increment": "yarn version --patch --no-git-tag-version"
     },
     "browserslist": [
         "ie 11"
