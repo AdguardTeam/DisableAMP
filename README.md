@@ -6,6 +6,8 @@ This is a very simple userscript that disables AMP pages on the Google search re
 
 * [AdGuard for Android](https://adguard.com/en/adguard-android/overview.html) has this userscript pre-installed (disabled by default).
 * You can use Violentmonkey, Tampermonkey, Greasemonkey or any other userscript host.
+    * Stable: https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.user.js
+    * Beta: https://userscripts.adtidy.org/beta/disable-amp/1.0/disable-amp.user.js
 
 ## How to build
 `yarn install`
