@@ -1,4 +1,4 @@
 {
     "name": "Disable AMP",
-    "description": "This is a very simple userscript to disable AMP on the Google search results page and Turbo pages on Yandex"
+    "description": "This is a very simple userscript that disables AMP on the Google search results page."
 }
