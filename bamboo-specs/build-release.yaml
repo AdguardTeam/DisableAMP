@@ -1,0 +1,75 @@
+---
+version: 2
+plan:
+  project-key: ADGEXT
+  key: DARELEASESPECS
+  name: disable-amp - build release
+variables:
+  dockerNode: node:current-alpine3.12
+
+stages:
+  - Default Stage:
+      manual: 'false'
+      final: 'false'
+      jobs:
+        - Default Job
+Default Job:
+  key: JOB1
+  docker:
+    image: ${bamboo.dockerNode}
+    volumes:
+      ${bamboo.tmp.directory}/yarn: /usr/local/share/.cache/yarn/v6
+    docker-run-arguments:
+      - --net=host
+  tasks:
+    - checkout:
+        force-clean-build: 'true'
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |-
+            set -x
+            set -e
+            ls -alt
+            yarn install
+            yarn release
+    - inject-variables:
+        file: build/release/variables.txt
+        scope: RESULT
+        namespace: userscriptMeta
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.vcs:task.vcs.tagging
+        configuration:
+          selectedRepository: defaultRepository
+          tagName: v${bamboo.userscriptMeta.version}
+  artifacts:
+    - name: disable-amp.meta.js
+      location: build/release
+      pattern: disable-amp.meta.js
+      shared: 'true'
+      required: 'true'
+    - name: wot.user.js
+      location: build/release
+      pattern: wot.user.js
+      shared: 'true'
+      required: 'true'
+  requirements:
+    - adg-docker: 'true'
+
+triggers: []
+
+branches:
+  create: manually
+  delete: never
+  link-to-jira: 'true'
+
+notifications:
+  - events:
+      - plan-status-changed
+    recipients:
+      - webhook:
+          name: Build webhook
+          url: http://jirahub.service.eu.consul/v1/webhook/bamboo?channel=adguard-qa
+labels: []
+other:
+  concurrent-build-plugin: system-default

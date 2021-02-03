@@ -1,0 +1,37 @@
+---
+version: 2
+deployment:
+  name: disable-amp - deploy release
+  source-plan: ADGEXT-DARELEASESPECS
+release-naming: ${bamboo.userscriptMeta.version}
+environments:
+  - userscripts.adtidy.org
+userscripts.adtidy.org:
+  triggers: []
+  tasks:
+    - clean
+    - checkout:
+        repository: bamboo-deploy-publisher
+        path: bamboo-deploy-publisher
+        force-clean-build: 'false'
+    - artifact-download:
+        artifacts:
+          - {}
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |-
+            set -x
+            ls -la
+            ./bamboo-deploy-publisher/deploy.sh disable-amp-release
+  final-tasks: []
+  variables: {}
+  requirements:
+    - adg-docker: 'true'
+  notifications:
+    - events:
+        - deployment-started-and-finished
+      recipients:
+        - webhook:
+            name: Deploy webhook
+            url: http://jirahub.service.eu.consul/v1/webhook/bamboo?channel=adguard-qa
