@@ -17,7 +17,7 @@
 !include 'deploy-release.yaml'
 
 ---
-!include 'beta-permissions.yaml'
+!include 'permissions-beta.yaml'
 
 ---
-!include 'release-permissions.yaml'
+!include 'permissions-release.yaml'
