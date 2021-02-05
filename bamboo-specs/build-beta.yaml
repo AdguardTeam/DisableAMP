@@ -33,6 +33,9 @@ Default Job:
             ls -alt
             yarn install
             yarn beta
+            chown -R $HOST_UID:$HOST_GID /usr/local/share/.cache/yarn/v6
+
+        environment: HOST_UID='500' HOST_GID='500'
     - inject-variables:
         file: build/beta/variables.txt
         scope: RESULT
