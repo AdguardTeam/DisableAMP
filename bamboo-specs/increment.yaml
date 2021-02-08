@@ -19,7 +19,7 @@ Increment:
   docker:
     image: ${bamboo.dockerNode}
     volumes:
-      ${bamboo.tmp.directory}/yarn: /usr/local/share/.cache/yarn/v6
+      ${bamboo.tmp.directory}/yarn: "${bamboo.yarnCache}"
     docker-run-arguments:
       - --net=host
   tasks:
@@ -32,7 +32,6 @@ Increment:
             set -x
             set -e
             ls -alt
-            yarn install
             yarn increment
     - any-task:
         plugin-key: com.atlassian.bamboo.plugins.vcs:task.vcs.commit
