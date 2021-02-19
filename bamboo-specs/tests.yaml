@@ -19,9 +19,7 @@ Test:
   docker:
     image: ${bamboo.dockerNode}
     volumes:
-      ${bamboo.tmp.directory}/yarn: /usr/local/share/.cache/yarn/v6
-    docker-run-arguments:
-      - --net=host
+      ${system.YARN_DIR}: "${bamboo.cacheYarn}"
   tasks:
     - checkout:
         force-clean-build: 'true'
@@ -34,6 +32,8 @@ Test:
             ls -alt
             yarn install
             yarn dev
+  final-tasks:
+    - clean
   requirements:
     - adg-docker: 'true'
 

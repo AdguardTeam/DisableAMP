@@ -8,19 +8,18 @@ variables:
   dockerNode: node:current-alpine3.12
 
 stages:
-  - Default Stage:
+  - Build:
       manual: 'false'
       final: 'false'
       jobs:
-        - Default Job
-Default Job:
-  key: JOB1
+        - Build
+
+Build:
+  key: BUILD
   docker:
     image: ${bamboo.dockerNode}
     volumes:
-      ${bamboo.tmp.directory}/yarn: "${bamboo.yarnCache}"
-    docker-run-arguments:
-      - --net=host
+      ${system.YARN_DIR}: "${bamboo.cacheYarn}"
   tasks:
     - checkout:
         force-clean-build: 'true'
@@ -33,13 +32,7 @@ Default Job:
             ls -alt
             yarn install
             yarn beta
-
   final-tasks:
-    - script:
-        interpreter: SHELL
-        scripts:
-          - |-
-            chown -R "${bamboo.hostUid}":"${bamboo.hostGid}" "${bamboo.yarnCache}"
     - clean
 
     - inject-variables:

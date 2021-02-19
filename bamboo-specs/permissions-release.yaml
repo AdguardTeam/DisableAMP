@@ -9,14 +9,14 @@ deployment-permissions:
     permissions:
       - view
   - groups:
-      - 2-extensions-developers
+      - extensions-developers
     permissions:
       - view
       - edit
 environment-permissions:
   - userscripts.adtidy.org:
       - groups:
-          - 2-extensions-developers
+          - extensions-developers
         permissions:
           - view
           - edit

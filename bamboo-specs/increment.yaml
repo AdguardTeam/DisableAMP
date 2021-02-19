@@ -19,9 +19,7 @@ Increment:
   docker:
     image: ${bamboo.dockerNode}
     volumes:
-      ${bamboo.tmp.directory}/yarn: "${bamboo.yarnCache}"
-    docker-run-arguments:
-      - --net=host
+      ${system.YARN_DIR}: "${bamboo.cacheYarn}"
   tasks:
     - checkout:
         force-clean-build: 'true'
