@@ -32,8 +32,8 @@ Build:
             ls -alt
             yarn install ${system.YARN_ARGS}
             yarn beta
-        environment:
-          NODE_ENV=production
+        # environment:
+        #   NODE_ENV=production
   final-tasks:
     - clean
 
