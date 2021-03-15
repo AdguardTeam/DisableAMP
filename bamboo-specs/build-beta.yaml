@@ -32,8 +32,6 @@ Build:
             ls -alt
             yarn install ${system.YARN_ARGS}
             yarn beta
-        environment:
-          NODE_ENV=production
 
     - inject-variables:
         file: build/beta/variables.txt
