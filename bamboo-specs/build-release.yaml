@@ -34,8 +34,6 @@ Build:
             yarn release
         environment:
           NODE_ENV=production
-  final-tasks:
-    - clean
 
     - inject-variables:
         file: build/release/variables.txt
