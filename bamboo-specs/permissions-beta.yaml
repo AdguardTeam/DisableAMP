@@ -1,0 +1,28 @@
+---
+version: 2
+deployment:
+  name: disable-amp - deploy beta
+deployment-permissions:
+  - roles:
+      - logged-in
+      - anonymous
+    permissions:
+      - view
+  - groups:
+      - extensions-developers
+    permissions:
+      - view
+      - edit
+environment-permissions:
+  - userscripts.adtidy.org:
+      - groups:
+          - extensions-developers
+        permissions:
+          - view
+          - edit
+          - deploy
+      - roles:
+          - logged-in
+          - anonymous
+        permissions:
+          - view

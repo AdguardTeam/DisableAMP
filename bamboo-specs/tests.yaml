@@ -1,0 +1,50 @@
+---
+version: 2
+plan:
+  project-key: ADGEXT
+  key: DATESTSPECS
+  name: disable-amp - test
+variables:
+  dockerNode: node:current-alpine3.12
+
+stages:
+  - Test:
+      manual: 'false'
+      final: 'false'
+      jobs:
+        - Test
+
+Test:
+  key: TEST
+  docker:
+    image: ${bamboo.dockerNode}
+    volumes:
+      ${system.YARN_DIR}: "${bamboo.cacheYarn}"
+  tasks:
+    - checkout:
+        force-clean-build: 'true'
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |-
+            set -x
+            set -e
+            ls -alt
+            yarn install ${system.YARN_ARGS}
+            yarn dev
+  final-tasks:
+    - clean
+  requirements:
+    - adg-docker: 'true'
+
+branches:
+  create: for-pull-request
+  delete:
+    after-deleted-days: '1'
+    after-inactive-days: '5'
+  link-to-jira: 'true'
+
+notifications: []
+labels: []
+other:
+  concurrent-build-plugin: system-default
