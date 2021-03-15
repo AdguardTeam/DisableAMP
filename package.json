@@ -4,7 +4,6 @@
     "author": "adguard@adguard.com",
     "license": "LGPL-3.0",
     "scripts": {
-        "test": "NODE_ENV=BETA ls -la",
         "dev": "NODE_ENV=DEV ./node_modules/.bin/webpack",
         "beta": "NODE_ENV=BETA ./node_modules/.bin/webpack",
         "release": "NODE_ENV=RELEASE ./node_modules/.bin/webpack",
