@@ -3,7 +3,7 @@ version: 2
 plan:
   project-key: ADGEXT
   key: DATESTSPECS
-  name: disable-amp - test specs
+  name: disable-amp - test
 variables:
   dockerNode: node:current-alpine3.12
 
