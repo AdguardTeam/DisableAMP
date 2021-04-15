@@ -16,6 +16,8 @@ stages:
 
 Increment:
   key: INCR
+  other:
+    clean-working-dir: true
   docker:
     image: ${bamboo.dockerNode}
     volumes:

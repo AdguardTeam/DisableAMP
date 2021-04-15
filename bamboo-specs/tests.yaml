@@ -16,6 +16,8 @@ stages:
 
 Test:
   key: TEST
+  other:
+    clean-working-dir: true
   docker:
     image: ${bamboo.dockerNode}
     volumes:
