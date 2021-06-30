@@ -17,6 +17,6 @@ if (document.location.origin.includes('yandex.')) {
     observeDomChanges(disableTurbo);
 }
 
-if (document.location.origin.includes('turbopages.org')) {
+if (document.location.href.includes('https://yandex.ru/turbo/')) {
     redirectTurboPages();
 }

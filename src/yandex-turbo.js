@@ -13,15 +13,18 @@ const hideTurboIcon = (turboLink) => {
  * Disables Yandex Turbo pages
  */
 const disableTurbo = () => {
-    const turboLinks = document.querySelectorAll('a[href^="https://yandex.ru/turbo/s/"]');
+    const turboLinks = document.querySelectorAll('a[href^="https://yandex.ru/turbo/"]');
     [...turboLinks].forEach((link) => {
-        const url = link.href.replace('yandex.ru/turbo/s/', '');
-        link.setAttribute('href', url);
+        const originalUrl = link.href
+            .replace('yandex.ru/turbo/', '')
+            .replace('/s/', '/');
+
+        link.setAttribute('href', originalUrl);
 
         link.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
-            document.location.href = url;
+            document.location.href = originalUrl;
         }, true);
 
         hideTurboIcon(link);
@@ -32,8 +35,13 @@ const disableTurbo = () => {
  * Redirects from Yandex Turbo page to normal version
  */
 const redirectTurboPages = () => {
-    const originalUrl = document.location.href.split('turbopages.org/s/').pop();
+    const originalUrl = document.location.href
+        .split('yandex.ru/turbo/')
+        .pop()
+        .replace('/s/', '/');
+
     const protocol = document.location.protocol;
+
     if (originalUrl && protocol) {
         document.location.href = `${protocol}//${originalUrl}`;
     }
