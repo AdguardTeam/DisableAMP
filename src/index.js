@@ -1,4 +1,4 @@
-import { disableTurbo, redirectTurboPages } from './yandex-turbo';
+import { redirectTurboPages } from './yandex-turbo';
 import disableAmp from './google-amp';
 
 
@@ -13,10 +13,6 @@ if (document.location.origin.includes('google.')) {
     observeDomChanges(disableAmp);
 }
 
-if (document.location.origin.includes('yandex.')) {
-    observeDomChanges(disableTurbo);
-}
-
-if (document.location.origin.includes('turbopages.org')) {
+if (document.location.href.includes('https://yandex.ru/turbo')) {
     redirectTurboPages();
 }
