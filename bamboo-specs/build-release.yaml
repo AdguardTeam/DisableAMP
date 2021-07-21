@@ -48,9 +48,9 @@ Build:
       pattern: disable-amp.meta.js
       shared: 'true'
       required: 'true'
-    - name: wot.user.js
+    - name: disable-amp.user.js
       location: build/release
-      pattern: wot.user.js
+      pattern: disable-amp.user.js
       shared: 'true'
       required: 'true'
   requirements:
