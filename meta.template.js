@@ -12,6 +12,6 @@
 // @include      https://*.turbopages.org/*
 // @include      https://*/amp/*
 // @include      https://*/amp-*/*
-// @include      https://*?amp
+// @include      https://*/?amp
 // @run-at       document-end
 // ==/UserScript==
