@@ -16,12 +16,10 @@ const hideAmpIcon = (amp) => {
 /**
  * Redirects amp version to normal
  */
-const ampRedirect = () => {
-    if (document.location.pathname.includes('/amp/')) {
-        const originalUrl = document.querySelector('#amp-hdr .amp-cantxt')?.textContent;
-        if (originalUrl && URL_PATTERN_REGEX.test(originalUrl)) {
-            document.location.replace(originalUrl);
-        }
+export const ampRedirect = () => {
+    const canonicalLink = document.querySelector('head > link[rel="canonical"]');
+    if (canonicalLink && URL_PATTERN_REGEX.test(canonicalLink.href)) {
+        document.location.replace(canonicalLink.href);
     }
 };
 
@@ -86,7 +84,6 @@ const replaceCdnAmp = () => {
 };
 
 const preventAmp = () => {
-    ampRedirect();
     replaceByAmpCurAttribute();
     replaceCdnAmp();
 };
