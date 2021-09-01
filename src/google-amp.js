@@ -18,7 +18,8 @@ const hideAmpIcon = (amp) => {
  */
 export const ampRedirect = () => {
     const canonicalLink = document.querySelector('head > link[rel="canonical"]');
-    if (canonicalLink && URL_PATTERN_REGEX.test(canonicalLink.href)) {
+    const ampProjectScript = document.querySelector('head > script[src^="https://cdn.ampproject.org"]');
+    if (ampProjectScript && canonicalLink && URL_PATTERN_REGEX.test(canonicalLink.href)) {
         document.location.replace(canonicalLink.href);
     }
 };
