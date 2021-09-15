@@ -16,5 +16,6 @@
 // @include      https://*?amp=1*
 // @include      https://*/*&amp*
 // @include      https://*/*&amp=1*
+// @exclude
 // @run-at       document-end
 // ==/UserScript==
