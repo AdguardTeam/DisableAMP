@@ -4,12 +4,14 @@ const glob = require('glob');
 const copyfile = require('cp-file');
 const replaceInFile = require('replace-in-file');
 const fs = require('fs');
+const exclusions = require('./src/exclusions');
 
 const PLUGIN_NAME = 'MetaDataPlugin';
 const DEFAULT_METADATA_TEMPLATE = './meta.template.js';
 const DEFAULT_LOCALES_DIR = './locales';
 const DEFAULT_POSTFIX = '';
 const BASE_LOCALE = 'en';
+const EXCLUDE_META_KEYWORD = '// @exclude';
 
 /**
  * Replace multiple strings in file
@@ -99,6 +101,23 @@ const getField = (translation, fieldOptions, localesDir, postfix) => {
 };
 
 /**
+ * Appends exclusions list to metadata
+ * @param {string} outputPath
+ */
+const addExclusionsToMetadata = (outputPath) => {
+    const exclusionsTemplate = exclusions.map((exclusion) =>
+        `${EXCLUDE_META_KEYWORD}      ${exclusion}`).join('\n');
+
+    const replaceOptions = {
+        from: EXCLUDE_META_KEYWORD,
+        to: exclusionsTemplate,
+        files: outputPath,
+    };
+
+    replaceInFile.sync(replaceOptions);
+}
+
+/**
  * Generate metadata file
  * @param {string} outputPath
  * @param {Function} callback function which should be executed in the end of the plugin's work
@@ -117,6 +136,8 @@ const createMetadata = (outputPath, callback, options) => {
     const metadataOutputPath = path.join(outputPath, filename);
     // Copy template file to output directory
     copyfile.sync(metadataTemplate, metadataOutputPath);
+
+    addExclusionsToMetadata(metadataOutputPath);
 
     // Separate fields which have multiple translations and simple fields
     const multipleFields = {};
