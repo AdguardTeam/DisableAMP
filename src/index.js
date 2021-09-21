@@ -13,5 +13,5 @@ if (document.location.href.includes('https://yandex.ru/turbo')) {
 } else if (document.location.origin.includes('google.')) {
     observeDomChanges(disableAmp);
 } else {
-    observeDomChanges(ampRedirect);
+    ampRedirect();
 }
