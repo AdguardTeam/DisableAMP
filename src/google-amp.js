@@ -20,7 +20,7 @@ export const ampRedirect = () => {
     const canonicalLink = document.querySelector('head > link[rel="canonical"]');
     const ampProjectScript = document.querySelector('head > script[src^="https://cdn.ampproject.org"]');
     if (ampProjectScript && canonicalLink && URL_PATTERN_REGEX.test(canonicalLink.href)) {
-        document.location.replace(canonicalLink.href);
+        window.top.location.href = canonicalLink.href;
     }
 };
 
