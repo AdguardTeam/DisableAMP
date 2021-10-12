@@ -30,7 +30,7 @@ Build:
             set -x
             set -e
             ls -alt
-            yarn install ${system.YARN_ARGS}
+            yarn install ${bamboo.varsYarn}
             yarn release
 
     - inject-variables:
