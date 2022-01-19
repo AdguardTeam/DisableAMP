@@ -17,6 +17,10 @@ const hideAmpIcon = (amp) => {
  * Redirects amp version to normal
  */
 export const ampRedirect = () => {
+    // Prevent redirecting to another page if run in an iframe
+    if (window.self !== window.top) {
+        return;
+    }
     const canonicalLink = document.querySelector('head > link[rel="canonical"]');
     const ampProjectScript = document.querySelector('head > script[src^="https://cdn.ampproject.org"]');
     if (ampProjectScript && canonicalLink && URL_PATTERN_REGEX.test(canonicalLink.href)) {
@@ -47,6 +51,7 @@ const replaceByAmpCurAttribute = () => {
             e.preventDefault();
             e.stopPropagation();
             // https://github.com/AdguardTeam/DisableAMP/pull/15
+            console.log('CLICK?');
             document.location.href = url;
         }, true);
         hideAmpIcon(el);
