@@ -51,7 +51,6 @@ const replaceByAmpCurAttribute = () => {
             e.preventDefault();
             e.stopPropagation();
             // https://github.com/AdguardTeam/DisableAMP/pull/15
-            console.log('CLICK?');
             document.location.href = url;
         }, true);
         hideAmpIcon(el);
