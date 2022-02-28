@@ -17,13 +17,23 @@ const hideAmpIcon = (amp) => {
  * Redirects amp version to normal
  */
 export const ampRedirect = () => {
-    // Prevent redirecting to another page if run in an iframe
-    if (window.self !== window.top) {
+    const DISABLE_AMP_REDIRECTED = '__disable_amp_redirected';
+    // timeout to prevent automatic redirects to amp
+    const REDIRECT_WAIT_TIME_OUT_MS = 30000;
+    const disableAmpRedirectedDate = Number(sessionStorage.getItem(DISABLE_AMP_REDIRECTED));
+    if (
+        // Prevent redirecting to another page if run in an iframe
+        window.self !== window.top
+        // Do not redirect if since last redirect past less than REDIRECT_WAIT_TIME_OUT_MS
+        || (disableAmpRedirectedDate
+            && Date.now() - disableAmpRedirectedDate < REDIRECT_WAIT_TIME_OUT_MS)
+    ) {
         return;
     }
     const canonicalLink = document.querySelector('head > link[rel="canonical"]');
     const ampProjectScript = document.querySelector('head > script[src^="https://cdn.ampproject.org"]');
     if (ampProjectScript && canonicalLink && URL_PATTERN_REGEX.test(canonicalLink.href)) {
+        sessionStorage.setItem(DISABLE_AMP_REDIRECTED, Date.now());
         window.top.location.href = canonicalLink.href;
     }
 };
