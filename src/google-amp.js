@@ -18,6 +18,13 @@ const hideAmpIcon = (amp) => {
  */
 export const ampRedirect = () => {
     const DISABLE_AMP_REDIRECTED = '__disable_amp_redirected';
+
+    const removeDisableAmpRedirected = () => {
+        sessionStorage.removeItem(DISABLE_AMP_REDIRECTED);
+        window.removeEventListener('unload', removeDisableAmpRedirected);
+    };
+
+    window.addEventListener('unload', removeDisableAmpRedirected);
     // timeout to prevent automatic redirects to amp
     const REDIRECT_WAIT_TIME_OUT_MS = 30000;
     const disableAmpRedirectedDate = Number(sessionStorage.getItem(DISABLE_AMP_REDIRECTED));
@@ -83,7 +90,7 @@ const replaceCdnAmp = () => {
             fixedUrl = HTTPS + fixedUrl.substr(12);
         }
 
-        fixedUrl = fixedUrl.replace('?amp&', '?&')
+        fixedUrl = fixedUrl.replace('?amp&', '?&');
 
         if (fixedUrl !== ampLink.href) {
             ampLink.setAttribute('href', fixedUrl);
