@@ -12,7 +12,7 @@ const { href, origin } = document.location;
 
 if (href.includes('https://yandex.ru/turbo') || href.includes('turbopages.org')) {
     redirectTurboPages();
-} else if (origin.includes('google.')) {
+} else if (origin.includes('.google.')) {
     observeDomChanges(disableAmp);
 } else {
     ampRedirect();
