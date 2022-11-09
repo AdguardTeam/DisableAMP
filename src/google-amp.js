@@ -42,19 +42,9 @@ export const ampRedirect = () => {
  * Replaces amp links by data-amp-cur attribute value
  */
 const replaceByAmpCurAttribute = () => {
-    const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
-    [...elements].forEach((el) => {
-        if (el[expando]) {
-            return;
-        }
+    const AMP_MARKER_REGEX = /(amp\/|amp-|\.amp)/;
 
-        // eslint-disable-next-line no-param-reassign
-        el[expando] = true;
-
-        const url = el.getAttribute('data-amp-cur');
-        if (!url) {
-            return;
-        }
+    const sanitizeLink = (el, url) => {
         el.setAttribute('href', url);
 
         el.addEventListener('click', (e) => {
@@ -64,6 +54,30 @@ const replaceByAmpCurAttribute = () => {
             document.location.href = url;
         }, true);
         hideAmpIcon(el);
+    };
+
+    const sanitizeUrl = (ampUrl) => ampUrl.replace(AMP_MARKER_REGEX, '');
+
+    const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
+    [...elements].forEach((el) => {
+        if (el[expando]) {
+            return;
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        el[expando] = true;
+
+        const canonicalUrl = el.getAttribute('data-amp-cur');
+        if (canonicalUrl) {
+            sanitizeLink(el, canonicalUrl);
+            return;
+        }
+
+        const ampUrl = el.getAttribute('data-amp');
+        if (ampUrl) {
+            const cleanUrl = sanitizeUrl(ampUrl);
+            sanitizeLink(el, cleanUrl);
+        }
     });
 };
 
@@ -83,7 +97,7 @@ const replaceCdnAmp = () => {
             fixedUrl = HTTPS + fixedUrl.substr(12);
         }
 
-        fixedUrl = fixedUrl.replace('?amp&', '?&')
+        fixedUrl = fixedUrl.replace('?amp&', '?&');
 
         if (fixedUrl !== ampLink.href) {
             ampLink.setAttribute('href', fixedUrl);
