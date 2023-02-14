@@ -69,7 +69,7 @@ const replaceByAmpCurAttribute = () => {
 
         const canonicalUrl = el.getAttribute('data-amp-cur');
         if (canonicalUrl) {
-            sanitizeLink(el, canonicalUrl);
+            sanitizeLink(el, sanitizeUrl(canonicalUrl));
             return;
         }
 
