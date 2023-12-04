@@ -1,4 +1,6 @@
 const URL_PATTERN_REGEX = /^https?:\/\/.+/i;
+const AMP_MARKERS_REGEXP = /(amp\/|amp-|\.amp)/;
+const ARTICLE_VIEW_AMP = 'articleViewAmp';
 const expando = `__${Math.random()}`;
 const HTTPS = 'https://';
 
@@ -12,6 +14,30 @@ const hideAmpIcon = (amp) => {
         ampIcon.style.display = 'none';
     }
 };
+
+/**
+ * Replaces href of amp link by canonical url
+ * @param {Element} el link element
+ * @param {string} url canonical url
+ */
+const sanitizeLink = (el, url) => {
+    el.setAttribute('href', url);
+
+    el.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // https://github.com/AdguardTeam/DisableAMP/pull/15
+        document.location.href = url;
+    }, true);
+    hideAmpIcon(el);
+};
+
+/**
+ * Removes amp marker from url
+ * @param {string} ampUrl amp url
+ * @returns {string} url without amp marker
+ */
+const sanitizeUrl = (ampUrl) => ampUrl.replace(AMP_MARKERS_REGEXP, '');
 
 /**
  * Redirects amp version to normal
@@ -42,23 +68,7 @@ export const ampRedirect = () => {
  * Replaces amp links by data-amp-cur attribute value
  */
 const replaceByAmpCurAttribute = () => {
-    const AMP_MARKER_REGEX = /(amp\/|amp-|\.amp)/;
-
-    const sanitizeLink = (el, url) => {
-        el.setAttribute('href', url);
-
-        el.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // https://github.com/AdguardTeam/DisableAMP/pull/15
-            document.location.href = url;
-        }, true);
-        hideAmpIcon(el);
-    };
-
-    const sanitizeUrl = (ampUrl) => ampUrl.replace(AMP_MARKER_REGEX, '');
-
-    const elements = document.querySelectorAll('a.amp_r[data-amp-cur]');
+    const elements = document.querySelectorAll('a[data-amp-cur]');
     [...elements].forEach((el) => {
         if (el[expando]) {
             return;
@@ -67,16 +77,17 @@ const replaceByAmpCurAttribute = () => {
         // eslint-disable-next-line no-param-reassign
         el[expando] = true;
 
-        const canonicalUrl = el.getAttribute('data-amp-cur');
-        if (canonicalUrl) {
-            sanitizeLink(el, sanitizeUrl(canonicalUrl));
+        const url = el.getAttribute('data-amp-cur') || el.getAttribute('data-amp');
+        if (url) {
+            sanitizeLink(el, sanitizeUrl(url));
             return;
         }
 
-        const ampUrl = el.getAttribute('data-amp');
-        if (ampUrl) {
-            const cleanUrl = sanitizeUrl(ampUrl);
-            sanitizeLink(el, cleanUrl);
+        // Some websites manage to break the data-amp-cur attribute and use articleViewAmp htmls instead,
+        // e.g http://www.mediatoday.co.kr/news/articleViewAmp.html?idxno=313292
+        const { href } = el;
+        if (href && href.includes(ARTICLE_VIEW_AMP)) {
+            sanitizeLink(el, href.replace(ARTICLE_VIEW_AMP, 'articleView'));
         }
     });
 };
