@@ -1,49 +1,20 @@
+import {
+    sanitizeUrl,
+    hideAmpIcon,
+    sanitizeLinkElement,
+    extractCanonicalFromJslog,
+} from './utils';
+
+const DISABLE_AMP_REDIRECTED = '__disable_amp_redirected';
 const URL_PATTERN_REGEX = /^https?:\/\/.+/i;
-const AMP_MARKERS_REGEXP = /(amp\/|amp-|\.amp)/;
 const ARTICLE_VIEW_AMP = 'articleViewAmp';
 const expando = `__${Math.random()}`;
 const HTTPS = 'https://';
 
 /**
- * Hide AMP icon for AMP element in google search results
- * @param amp element
- */
-const hideAmpIcon = (amp) => {
-    const ampIcon = amp.querySelector('[aria-label="AMP logo"], [aria-label="Logo AMP"]');
-    if (ampIcon) {
-        ampIcon.style.display = 'none';
-    }
-};
-
-/**
- * Replaces href of amp link by canonical url
- * @param {Element} el link element
- * @param {string} url canonical url
- */
-const sanitizeLink = (el, url) => {
-    el.setAttribute('href', url);
-
-    el.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        // https://github.com/AdguardTeam/DisableAMP/pull/15
-        document.location.href = url;
-    }, true);
-    hideAmpIcon(el);
-};
-
-/**
- * Removes amp marker from url
- * @param {string} ampUrl amp url
- * @returns {string} url without amp marker
- */
-const sanitizeUrl = (ampUrl) => ampUrl.replace(AMP_MARKERS_REGEXP, '');
-
-/**
  * Redirects amp version to normal
  */
 export const ampRedirect = () => {
-    const DISABLE_AMP_REDIRECTED = '__disable_amp_redirected';
     // timeout to prevent automatic redirects to amp
     const REDIRECT_WAIT_TIME_OUT_MS = 30000;
     const disableAmpRedirectedDate = Number(sessionStorage.getItem(DISABLE_AMP_REDIRECTED));
@@ -79,7 +50,7 @@ const replaceByAmpCurAttribute = () => {
 
         const url = el.getAttribute('data-amp-cur') || el.getAttribute('data-amp');
         if (url) {
-            sanitizeLink(el, sanitizeUrl(url));
+            sanitizeLinkElement(el, sanitizeUrl(url));
             return;
         }
 
@@ -87,7 +58,7 @@ const replaceByAmpCurAttribute = () => {
         // e.g http://www.mediatoday.co.kr/news/articleViewAmp.html?idxno=313292
         const { href } = el;
         if (href && href.includes(ARTICLE_VIEW_AMP)) {
-            sanitizeLink(el, href.replace(ARTICLE_VIEW_AMP, 'articleView'));
+            sanitizeLinkElement(el, href.replace(ARTICLE_VIEW_AMP, 'articleView'));
         }
     });
 };
@@ -123,9 +94,22 @@ const replaceCdnAmp = () => {
     });
 };
 
-const preventAmp = () => {
+export const preventAmp = () => {
     replaceByAmpCurAttribute();
     replaceCdnAmp();
 };
 
-export default preventAmp;
+export const preventNewsAmp = () => {
+    if (window.self !== window.top) {
+        return;
+    }
+    const linkElements = document.querySelectorAll('article > a[jslog]');
+    linkElements.forEach((el) => {
+        // news.google.com keep amp links as encoded `jslog` attribute value
+        const jslog = el.getAttribute('jslog');
+        const canonicalUrl = extractCanonicalFromJslog(jslog);
+        if (canonicalUrl) {
+            sanitizeLinkElement(el, canonicalUrl);
+        }
+    });
+};

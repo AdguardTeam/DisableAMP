@@ -8,6 +8,7 @@
 // @homepageURL  https://adguard.com/
 // @author       AdGuard
 // @include      https://www.google.*/*
+// @include      https://news.google.*/*
 // @include      https://yandex.*/*
 // @include      https://*.turbopages.org/*
 // @include      https://*/amp/*
