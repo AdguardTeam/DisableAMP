@@ -1,6 +1,6 @@
 {
     "name": "disable-amp",
-    "version": "1.0.44",
+    "version": "1.0.45",
     "author": "adguard@adguard.com",
     "license": "LGPL-3.0",
     "scripts": {
