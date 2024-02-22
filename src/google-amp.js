@@ -51,7 +51,6 @@ const replaceByAmpCurAttribute = () => {
         const url = el.getAttribute('data-amp-cur') || el.getAttribute('data-amp');
         if (url) {
             sanitizeLinkElement(el, sanitizeUrl(url));
-            return;
         }
 
         // Some websites manage to break the data-amp-cur attribute and use articleViewAmp htmls instead,
