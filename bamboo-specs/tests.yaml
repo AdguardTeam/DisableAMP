@@ -32,9 +32,22 @@ Test:
             ls -alt
             yarn install ${bamboo.varsYarn}
             yarn dev
-            rm -rf node_modules
   final-tasks:
-    - clean
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |-
+            set -x
+            set -e
+
+            # Fix mixed logs
+            exec 2>&1
+
+            ls -la
+
+            echo "Size before cleanup:" && du -h | tail -n 1
+            rm -rf node_modules
+            echo "Size after cleanup:" && du -h | tail -n 1
   requirements:
     - adg-docker: 'true'
 
