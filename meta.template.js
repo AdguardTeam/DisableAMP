@@ -14,11 +14,17 @@
 // @include      https://*/amp/*
 // @include      https://*/*/amp/*
 // @include      https://amp.*
-// @include      https://*/amp-*/*
+// @include      https://*/*/amp
+// @include      https://*/*.amp*
+// @include      https://*/*-amp*
+// @include      https://*/*_amp*
+// @include      https://*/*=amp*
 // @include      https://*/?amp*
-// @include      https://*?amp=1*
 // @include      https://*/*&amp*
 // @include      https://*/*&amp=1*
+// @include      https://*?amp=1*
+// @include      https://*/amp-*/*
+// @include      https://*/ampNews/*
 // @exclude
 // @run-at       document-end
 // ==/UserScript==

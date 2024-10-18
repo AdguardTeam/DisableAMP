@@ -6,7 +6,6 @@ const pkg = require('./package.json');
 const MetaDataPlugin = require('./metadata.plugin');
 const metaSettings = require('./meta.settings');
 
-
 const BUILD_DIR = 'build';
 const SOURCE_DIR = 'src';
 const MODE_TYPES = { DEV: 'dev', BETA: 'beta', RELEASE: 'release' };

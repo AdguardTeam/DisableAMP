@@ -1,4 +1,5 @@
 import { redirectTurboPages } from './yandex-turbo';
+import { redirectAmpProjectPages } from './amp-project';
 import { preventNewsAmp, preventAmp, ampRedirect } from './google-amp';
 import { observeDomChanges } from './utils';
 
@@ -12,6 +13,7 @@ import { observeDomChanges } from './utils';
 
     if (!origin.includes('.google.')) {
         ampRedirect();
+        redirectAmpProjectPages();
         return;
     }
 
