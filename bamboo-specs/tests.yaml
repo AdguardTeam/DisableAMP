@@ -31,6 +31,7 @@ Test:
             set -e
             ls -alt
             yarn install ${bamboo.varsYarn}
+            yarn lint
             yarn dev
   final-tasks:
     - script:
@@ -48,6 +49,17 @@ Test:
             echo "Size before cleanup:" && du -h | tail -n 1
             rm -rf node_modules
             echo "Size after cleanup:" && du -h | tail -n 1
+  artifacts:
+    - name: disable-amp.meta.js
+      location: build/dev
+      pattern: disable-amp.meta.js
+      shared: 'true'
+      required: 'true'
+    - name: disable-amp.user.js
+      location: build/dev
+      pattern: disable-amp.user.js
+      shared: 'true'
+      required: 'true'
   requirements:
     - adg-docker: 'true'
 
