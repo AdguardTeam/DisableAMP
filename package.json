@@ -7,6 +7,7 @@
         "dev": "NODE_ENV=DEV ./node_modules/.bin/webpack",
         "beta": "NODE_ENV=BETA ./node_modules/.bin/webpack",
         "release": "NODE_ENV=RELEASE ./node_modules/.bin/webpack",
+        "watch": "NODE_ENV=DEV ./node_modules/.bin/webpack --watch",
         "lint": "eslint ./src",
         "locales:download": "LOCALES=DOWNLOAD node locales.js",
         "locales:upload": "LOCALES=UPLOAD node locales.js",
@@ -38,7 +39,7 @@
         "html-webpack-plugin": "^3.2.0",
         "husky": "^4.3.0",
         "replace-in-file": "^4.1.1",
-        "webpack": "^4.35.3",
+        "webpack": "^5.95.0",
         "webpack-cli": "^3.3.5"
     }
 }

@@ -22,7 +22,8 @@
 // @include      https://*/?amp*
 // @include      https://*/*&amp*
 // @include      https://*/*&amp=1*
-// @include      https://*?amp=1*
+// @include      https://*?amp=*
+// @include      https://*/*?amp=1*
 // @include      https://*/amp-*/*
 // @include      https://*/ampNews/*
 // @exclude

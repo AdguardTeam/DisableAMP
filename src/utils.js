@@ -36,14 +36,6 @@ export const sanitizeLinkElement = (el, url) => {
 };
 
 /**
- * Removes amp marker from url
- *
- * @param {string} ampUrl amp url
- * @returns {string} url without amp marker
- */
-export const sanitizeUrl = (ampUrl) => ampUrl.replace(AMP_TOKEN_REGEXP, '');
-
-/**
  * Extracts canonical url from link tags which use jslog attribute to store
  * encoded data. Encoded data may store only canonical url or both canonical
  * and amp urls.
