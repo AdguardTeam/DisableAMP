@@ -26,6 +26,7 @@
 // @include      https://*/*?amp=1*
 // @include      https://*/amp-*/*
 // @include      https://*/ampNews/*
+// @include      https://*/*/?noamp=*
 // @exclude
 // @run-at       document-end
 // ==/UserScript==

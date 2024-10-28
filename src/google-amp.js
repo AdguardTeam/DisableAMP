@@ -28,7 +28,10 @@ export const cleanAmpLink = () => {
  * Redirects amp version to normal
  */
 export const ampRedirect = () => {
-    const canonicalLink = document.querySelector('head > link[rel="canonical"]');
+    // html links stores inside amp-mobile-version-switcher or inside canonical link tag
+    const canonicalLink = document.querySelector('#amp-mobile-version-switcher > a')
+        || document.querySelector('head > link[rel="canonical"]');
+
     if (!canonicalLink) {
         return;
     }
@@ -37,7 +40,7 @@ export const ampRedirect = () => {
         return;
     }
 
-    // iframe do not have this marker
+    // additional marker to check if the page is amp
     const ampMarker = document.querySelector('script[src^="https://cdn.ampproject.org/"]');
     if (!ampMarker) {
         return;

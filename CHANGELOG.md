@@ -7,7 +7,20 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
-## [1.0.51] - 2024-10-23
+## [1.0.52] - 2024-10-28
+
+### Added
+
+- AMP handling on WordPress sites.
+
+### Fixed
+
+- Infinite reloading on innogyan.in [#103].
+
+[1.0.52]: https://github.com/AdguardTeam/Scriptlets/compare/v1.0.51...v1.0.52
+[#103]: https://github.com/AdguardTeam/DisableAMP/issues/103
+
+## [1.0.51] - 2024-10-24
 
 ### Added
 
