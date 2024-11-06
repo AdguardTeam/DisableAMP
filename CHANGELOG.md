@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
+## [1.0.53] - 2024-11-06
+
+### Fixed
+
+- Redirect on Turbo pages [#58].
+
+[1.0.53]: https://github.com/AdguardTeam/Scriptlets/compare/v1.0.52...v1.0.53
+[#58]: https://github.com/AdguardTeam/DisableAMP/issues/58
+
 ## [1.0.52] - 2024-10-28
 
 ### Added

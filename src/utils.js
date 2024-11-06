@@ -1,10 +1,53 @@
 const AMP_TOKEN_REGEXP = /(amp\/|amp-|\.amp)/;
+/**
+ * An array of CSS selectors used to identify canonical links in a document.
+ * @type {string[]}
+ */
+const CANONICAL_LINK_SELECTORS = [
+    '#amp-mobile-version-switcher > a',
+    'head > link[rel="canonical"]',
+];
+
+/**
+ * Check if given string is valid url
+ * @param {string} url - url to check
+ * @returns - true if url is valid, false otherwise
+ */
+const isValidUrl = (url) => {
+    try {
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false;
+    }
+};
 
 export const observeDomChanges = (callback) => {
     new MutationObserver(callback).observe(document, {
         childList: true,
         subtree: true,
     });
+};
+
+/**
+ * Get canonical link from elements with {@link CANONICAL_LINK_SELECTORS}.
+ * @returns {string|null} canonical url or null if not found
+ */
+export const extractCanonicalLink = () => {
+    // html links stores inside amp-mobile-version-switcher or inside canonical link tag
+    const canonicalLink = CANONICAL_LINK_SELECTORS.reduce((found, selector) => {
+        return found || document.querySelector(selector);
+    }, null);
+
+    if (!canonicalLink) {
+        return null;
+    }
+
+    if (!isValidUrl(canonicalLink.href)) {
+        return null;
+    }
+
+    return canonicalLink.href;
 };
 
 /**

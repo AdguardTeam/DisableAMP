@@ -1,6 +1,10 @@
-import { hideAmpIcon, sanitizeLinkElement, extractCanonicalFromJslog } from './utils';
+import {
+    hideAmpIcon,
+    sanitizeLinkElement,
+    extractCanonicalFromJslog,
+    extractCanonicalLink,
+} from './utils';
 
-const URL_PATTERN_REGEX = /^https?:\/\/.+/i;
 const HTTPS = 'https://';
 const AMP_ATTRIBUTES_TO_REMOVE = [
     'ping',
@@ -28,26 +32,19 @@ export const cleanAmpLink = () => {
  * Redirects amp version to normal
  */
 export const ampRedirect = () => {
-    // html links stores inside amp-mobile-version-switcher or inside canonical link tag
-    const canonicalLink = document.querySelector('#amp-mobile-version-switcher > a')
-        || document.querySelector('head > link[rel="canonical"]');
-
-    if (!canonicalLink) {
-        return;
-    }
-
-    if (!URL_PATTERN_REGEX.test(canonicalLink.href)) {
-        return;
-    }
-
     // additional marker to check if the page is amp
     const ampMarker = document.querySelector('script[src^="https://cdn.ampproject.org/"]');
     if (!ampMarker) {
         return;
     }
 
+    const canonicalLink = extractCanonicalLink();
+
+    if (!canonicalLink) {
+        return;
+    }
     // redirect to canonical link if current page is not iframe
-    document.location.href = canonicalLink.href;
+    document.location.href = canonicalLink;
 };
 
 /**
