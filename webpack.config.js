@@ -38,13 +38,17 @@ const config = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new CopyPlugin([{
-            from: `./${CI_BUILD_CONFIG}`,
-            transform: (content) => {
-                const str = content.toString();
-                return str.replace('[VERSION]', pkg.version);
-            },
-        }]),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: `./${CI_BUILD_CONFIG}`,
+                    transform: (content) => {
+                        const str = content.toString();
+                        return str.replace('[VERSION]', pkg.version);
+                    },
+                },
+            ],
+        }),
         new MetaDataPlugin({
             filename: USERSCRIPT_NAME,
             ...metaSettings.common,

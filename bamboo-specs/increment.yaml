@@ -5,7 +5,7 @@ plan:
   key: DAINCRSPECS
   name: disable-amp - increment version
 variables:
-  dockerNode: adguard/node-ssh:14.18--2
+  dockerNode: adguard/node-ssh:22.11--0
 
 stages:
   - Increment:

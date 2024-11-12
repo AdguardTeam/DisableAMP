@@ -5,7 +5,7 @@ plan:
   key: DATESTSPECS
   name: disable-amp - test
 variables:
-  dockerNode: adguard/node-ssh:14.18--2
+  dockerNode: adguard/node-ssh:22.11--0
 
 stages:
   - Test:
