@@ -13,15 +13,35 @@ const AMP_ATTRIBUTES_TO_REMOVE = [
     'data-amp-title',
     'data-amp',
     'data-amp-vgi',
+    'jsaction',
 ];
+const AMP_IMAGE_LINK_SELECTOR = 'a[data-ved]:has(> div[class] > span + svg)';
+const AMP_LINK_SELECTOR = 'a[data-amp]';
 
 /**
- * Prevent amp links from open in google iframe
+ * Prevent AMP links from Google News, Search, and Images from opening within Google's iframe
  * e.g. google.com/amp/amp.website.com
  */
 export const cleanAmpLink = () => {
-    const ampLinks = document.querySelectorAll('a[data-amp]');
-    ampLinks.forEach((link) => {
+    const ampImageLinks = document.querySelectorAll(AMP_IMAGE_LINK_SELECTOR);
+    const siblingAmpLinks = [];
+
+    ampImageLinks.forEach((link) => {
+        const siblingAmpLink = link.previousElementSibling;
+        if (!siblingAmpLink || !siblingAmpLink.hasAttribute('data-ved')) {
+            return;
+        }
+        siblingAmpLinks.push(siblingAmpLink);
+    });
+
+    const ampLinks = document.querySelectorAll(AMP_LINK_SELECTOR);
+    const allAmpLinks = [
+        ...ampLinks,
+        ...ampImageLinks,
+        ...siblingAmpLinks,
+    ];
+
+    allAmpLinks.forEach((link) => {
         AMP_ATTRIBUTES_TO_REMOVE.forEach((attr) => {
             link.removeAttribute(attr);
         });
