@@ -16,7 +16,8 @@ const AMP_ATTRIBUTES_TO_REMOVE = [
     'jsaction',
 ];
 const AMP_IMAGE_LINK_SELECTOR = 'a[data-ved]:has(> div[class] > span + svg)';
-const AMP_LINK_SELECTOR = 'a[data-amp]';
+const AMP_SEARCH_LINK_SELECTOR = 'a[data-amp]';
+const AMP_NEWS_LINK_SELECTOR = 'a[data-amp-vgi]';
 
 /**
  * Prevent AMP links from Google News, Search, and Images from opening within Google's iframe
@@ -34,9 +35,13 @@ export const cleanAmpLink = () => {
         siblingAmpLinks.push(siblingAmpLink);
     });
 
-    const ampLinks = document.querySelectorAll(AMP_LINK_SELECTOR);
+    const ampSearchLinks = document.querySelectorAll(AMP_SEARCH_LINK_SELECTOR);
+
+    const ampNewsLinks = document.querySelectorAll(AMP_NEWS_LINK_SELECTOR);
+
     const allAmpLinks = [
-        ...ampLinks,
+        ...ampSearchLinks,
+        ...ampNewsLinks,
         ...ampImageLinks,
         ...siblingAmpLinks,
     ];
