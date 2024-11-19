@@ -7,14 +7,16 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
-## [1.0.57] - 2024-11-15
+## [1.0.58] - 2024-11-19
 
 ### Added
 
 - `/NewsViewAmp/` pattern for AMP pages [#105].
+- `amp_articleshow` pattern for AMP pages [#106].
 
-[1.0.57]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.56...v1.0.57
+[1.0.58]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.56...v1.0.58
 [#105]: https://github.com/AdguardTeam/DisableAMP/issues/105
+[#106]: https://github.com/AdguardTeam/DisableAMP/issues/106
 
 ## [1.0.56] - 2024-11-13
 

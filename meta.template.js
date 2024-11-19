@@ -27,6 +27,7 @@
 // @include      https://*/amp-*/*
 // @include      https://*/ampNews/*
 // @include      https://*/NewsViewAmp/*
+// @include      https://*/*/amp_articleshow/*
 // @include      https://*/*/?noamp=*
 // @exclude
 // @run-at       document-end
