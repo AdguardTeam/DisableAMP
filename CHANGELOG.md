@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
+## [1.0.59] - 2024-11-26
+
+### Added
+
+- Removing `amp` query parameter from the canonical link [#107].
+
+[1.0.59]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.58...v1.0.59
+[#107]: https://github.com/AdguardTeam/DisableAMP/issues/107
+
 ## [1.0.58] - 2024-11-19
 
 ### Added

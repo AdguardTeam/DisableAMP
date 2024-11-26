@@ -47,7 +47,15 @@ export const extractCanonicalLink = () => {
         return null;
     }
 
-    return canonicalLink.href;
+    // need to remove amp query parameter from canonical link
+    // if it is present in the url
+    const canonicalUrl = new URL(canonicalLink.href);
+
+    if (canonicalUrl.searchParams.has('amp')) {
+        canonicalUrl.searchParams.delete('amp');
+    }
+
+    return canonicalUrl.href;
 };
 
 /**
