@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
+## [1.0.60] - 2025-01-15
+
+### Added
+
+- `китайские-автомобили.рф` to the exclusions [#109].
+
+[1.0.60]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.59...v1.0.60
+[#109]: https://github.com/AdguardTeam/DisableAMP/issues/109
+
 ## [1.0.59] - 2024-11-26
 
 ### Added
