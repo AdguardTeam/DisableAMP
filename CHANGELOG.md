@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
+## [1.0.61] - 2025-02-07
+
+### Added
+
+- `onmanorama.com` to the exclusions [#110].
+
+[1.0.61]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.60...v1.0.61
+[#110]: https://github.com/AdguardTeam/DisableAMP/issues/110
+
 ## [1.0.60] - 2025-01-15
 
 ### Added
