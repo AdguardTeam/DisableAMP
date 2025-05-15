@@ -2,6 +2,9 @@ const exclusions = [
     // automatic redirect to amp in .htaccess
     'https://www.orfonline.org/*',
     'https://tehnichka.pro/*',
+    // https://github.com/AdguardTeam/DisableAMP/issues/115
+    'https://www.teluguone.com/*',
+    'https://teluguone.com/*',
     // https://github.com/AdguardTeam/DisableAMP/issues/110
     'https://www.onmanorama.com/*',
     // https://github.com/AdguardTeam/DisableAMP/issues/109
