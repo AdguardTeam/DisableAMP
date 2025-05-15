@@ -7,14 +7,16 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
-## [1.0.62] - 2025-05-15
+## [1.0.63] - 2025-05-15
 
 ### Added
 
 - `teluguone.com` to the exclusions [#115].
+- `/articleViewAmp` pattern for AMP pages [#116].
 
-[1.0.62]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.61...v1.0.62
+[1.0.63]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.61...v1.0.63
 [#115]: https://github.com/AdguardTeam/DisableAMP/issues/115
+[#116]: https://github.com/AdguardTeam/DisableAMP/issues/116
 
 ## [1.0.61] - 2025-02-07
 
