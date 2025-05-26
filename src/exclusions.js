@@ -1,4 +1,6 @@
 const exclusions = [
+    // https://github.com/AdguardTeam/DisableAMP/issues/118
+    'https://www.eurasiantimes.com/*',
     // automatic redirect to amp in .htaccess
     'https://www.orfonline.org/*',
     'https://tehnichka.pro/*',
