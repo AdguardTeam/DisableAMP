@@ -70,6 +70,7 @@ Build:
       required: 'true'
   requirements:
     - adg-docker: 'true'
+    - extension: 'true'
 
 triggers: []
 
