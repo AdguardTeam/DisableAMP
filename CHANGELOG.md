@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
+## [1.0.67] - 2026-01-20
+
+### Fixed
+
+- AMP links in Google News fail to redirect properly [#120].
+
+[1.0.67]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.66...v1.0.67
+[#120]: https://github.com/AdguardTeam/DisableAMP/issues/120
+
 ## [1.0.66] - 2025-07-31
 
 ### Added

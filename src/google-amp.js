@@ -107,7 +107,7 @@ export const preventNewsAmp = () => {
     if (window.self !== window.top) {
         return;
     }
-    const linkElements = document.querySelectorAll('article > a[jslog]');
+    const linkElements = document.querySelectorAll('a[jslog]');
     linkElements.forEach((el) => {
         // news.google.com keep amp links as encoded `jslog` attribute value
         const jslog = el.getAttribute('jslog');
