@@ -37,11 +37,11 @@ Build:
         file: output/artifacts/variables.txt
         scope: RESULT
         namespace: userscriptMeta
-    - any-task:
-        plugin-key: com.atlassian.bamboo.plugins.vcs:task.vcs.tagging
-        configuration:
-          selectedRepository: defaultRepository
-          tagName: v${bamboo.userscriptMeta.version}-beta
+#     - any-task:
+#         plugin-key: com.atlassian.bamboo.plugins.vcs:task.vcs.tagging
+#         configuration:
+#           selectedRepository: defaultRepository
+#           tagName: v${bamboo.userscriptMeta.version}-beta
   final-tasks:
     - script:
         interpreter: SHELL
