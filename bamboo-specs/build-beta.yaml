@@ -4,8 +4,6 @@ plan:
   project-key: ADGEXT
   key: DABSPECS
   name: disable-amp - build beta
-variables:
-  dockerNode: adguard/node-ssh:22.11--0
 
 stages:
   - Build:
@@ -16,10 +14,6 @@ stages:
 
 Build:
   key: BUILD
-  docker:
-    image: ${bamboo.dockerNode}
-    volumes:
-      ${system.YARN_DIR}: "${bamboo.cacheYarn}"
   tasks:
     - checkout:
         force-clean-build: 'true'
@@ -29,11 +23,18 @@ Build:
           - |-
             set -x
             set -e
-            ls -alt
-            yarn install ${bamboo.varsYarn}
-            yarn beta
+
+            # Fix mixed logs
+            exec 2>&1
+
+            docker build \
+              --file Dockerfile \
+              --progress plain \
+              --target build-beta-output \
+              --output type=local,dest=output \
+              .
     - inject-variables:
-        file: build/beta/variables.txt
+        file: output/artifacts/variables.txt
         scope: RESULT
         namespace: userscriptMeta
     - any-task:
@@ -52,19 +53,15 @@ Build:
             # Fix mixed logs
             exec 2>&1
 
-            ls -la
-
-            echo "Size before cleanup:" && du -h | tail -n 1
-            rm -rf node_modules
-            echo "Size after cleanup:" && du -h | tail -n 1
+            ./bamboo-specs/scripts/cleanup.sh "output/artifacts/disable-amp.meta.js,output/artifacts/disable-amp.user.js"
   artifacts:
     - name: disable-amp.meta.js
-      location: build/beta
+      location: output/artifacts
       pattern: disable-amp.meta.js
       shared: 'true'
       required: 'true'
     - name: disable-amp.user.js
-      location: build/beta
+      location: output/artifacts
       pattern: disable-amp.user.js
       shared: 'true'
       required: 'true'
