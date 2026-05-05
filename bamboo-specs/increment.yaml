@@ -19,7 +19,7 @@ Increment:
   docker:
     image: ${bamboo.dockerNode}
     volumes:
-      ${system.YARN_DIR}: "${bamboo.cacheYarn}"
+      ${system.PNPM_DIR}: "${bamboo.cachePnpm}"
   tasks:
     - checkout:
         force-clean-build: 'true'
@@ -33,7 +33,8 @@ Increment:
             # Fix mixed logs
             exec 2>&1
 
-            yarn increment
+            pnpm config set store-dir "${bamboo.cachePnpm}"
+            pnpm run increment
     - any-task:
         plugin-key: com.atlassian.bamboo.plugins.vcs:task.vcs.commit
         configuration:

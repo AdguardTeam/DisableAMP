@@ -25,10 +25,10 @@ Developer guide for setting up, running, and changing Disable AMP locally.
     - [Refresh Browserslist Data](#refresh-browserslist-data)
 - [Troubleshooting](#troubleshooting)
     - [Browserslist Data Is Outdated](#browserslist-data-is-outdated)
-    - [Yarn Prints Url Parse Deprecation](#yarn-prints-url-parse-deprecation)
-    - [Yarn Test Is Missing](#yarn-test-is-missing)
-    - [Locales Script Prints Option Missing](#locales-script-prints-option-missing)
-    - [Built Script Does Not Run On A Page](#built-script-does-not-run-on-a-page)
+    - [Package Manager](#package-manager)
+    - [Wrapper Test Needs Environment](#wrapper-test-needs-environment)
+    - [Locales Option Missing](#locales-option-missing)
+    - [Built Script Does Not Run](#built-script-does-not-run)
     - [Generated Files Keep Changing](#generated-files-keep-changing)
 - [Additional Resources](#additional-resources)
 
@@ -36,10 +36,10 @@ Developer guide for setting up, running, and changing Disable AMP locally.
 
 ### Required Tools
 
-- Node.js 22.11.x is the CI baseline. The Docker build image is
-  `adguard/node-ssh:22.11--0`.
+- Node.js 22.17.x is the CI baseline. The Docker build image is
+  `adguard/node-ssh:22.17--0`.
 - Node.js 24.14.0 is also verified locally in this workspace on 2026-05-04.
-- Yarn 1.x is required. Yarn 1.22.22 is verified locally in this workspace.
+- pnpm 10.x is required. The exact version is pinned in `package.json`.
 - A userscript host is needed for manual browser checks. Use AdGuard for
   Android, Violentmonkey, Tampermonkey, Greasemonkey, or another compatible
   userscript host.
@@ -47,25 +47,26 @@ Developer guide for setting up, running, and changing Disable AMP locally.
   build stages from `Dockerfile`.
 
 There is no `.nvmrc`, `.node-version`, or `engines` field in `package.json`.
-Prefer Node.js 22.11.x when matching CI behavior exactly.
+Prefer Node.js 22.17.x when matching CI behavior exactly.
 
 ### Optional Tools
 
 - VS Code with the ESLint extension helps surface the same lint rules used by
-  `yarn lint`.
+  `pnpm run lint`.
 - `rg` is useful for searching metadata patterns and source modules.
 
 ## Getting Started
 
 ### Install Dependencies
 
-Clone the repository, then install dependencies with Yarn:
+Clone the repository, then install dependencies with pnpm:
 
 ```sh
-yarn install --frozen-lockfile
+pnpm install --frozen-lockfile
 ```
 
-Use `--frozen-lockfile` so local installs match `yarn.lock` and CI behavior.
+Use `--frozen-lockfile` so local installs match `pnpm-lock.yaml` and CI
+behavior.
 
 ### Configure Environment
 
@@ -75,7 +76,7 @@ The project uses these environment variables in scripts:
 
 - `NODE_ENV`: selected by package scripts. Use `DEV`, `BETA`, or `RELEASE`.
 - `LOCALES`: selected by locale scripts. Use `DOWNLOAD` or `UPLOAD`.
-- `YARN_CACHE_FOLDER`: used in Docker builds, defaults to `/yarn-cache` there.
+- `PNPM_HOME`: used in Docker builds, defaults to `/pnpm` there.
 
 Do not add credentials to the repository. Translation service credentials, if
 needed by your environment, must come from local shell config or CI secrets.
@@ -85,7 +86,7 @@ needed by your environment, must come from local shell config or CI secrets.
 Create a development build:
 
 ```sh
-yarn dev
+pnpm run dev
 ```
 
 The build writes these files:
@@ -100,7 +101,7 @@ Load `build/dev/disable-amp.user.js` in a userscript host to test behavior in a
 browser. For active development, run the watcher:
 
 ```sh
-yarn watch
+pnpm run watch
 ```
 
 The watcher rebuilds `build/dev/disable-amp.user.js` after source, metadata, or
@@ -131,16 +132,20 @@ change source files and rebuild instead.
 
 ### Available Commands
 
-- `yarn dev`: builds the development userscript into `build/dev`.
-- `yarn beta`: builds a minified beta userscript into `build/beta`.
-- `yarn release`: builds a minified release userscript into `build/release`.
-- `yarn watch`: runs the development build in watch mode.
-- `yarn lint`: runs ESLint against `src/`.
-- `yarn locales:download`: downloads translations from Twosky/Crowdin.
-- `yarn locales:upload`: uploads base translations to Twosky/Crowdin.
-- `yarn increment`: bumps the patch version in `package.json` without a git tag.
-
-There is no configured `yarn test` script in `package.json`.
+- `pnpm run dev`: builds the development userscript into `build/dev`.
+- `pnpm run beta`: builds a minified beta userscript into `build/beta`.
+- `pnpm run release`: builds a minified release userscript into `build/release`.
+- `pnpm run watch`: runs the development build in watch mode.
+- `pnpm run lint`: runs ESLint against `src/`.
+- `pnpm run test`: runs metadata and direct browser smoke tests.
+- `pnpm run test:metadata`: verifies generated userscript metadata patterns.
+- `pnpm run test:e2e`: runs direct Playwright browser smoke tests.
+- `pnpm run test:wrapper`: runs userscripts-wrapper e2e tests. It requires
+  `USERSCRIPTS_WRAPPER_DIR`.
+- `pnpm run locales:download`: downloads translations from Twosky/Crowdin.
+- `pnpm run locales:upload`: uploads base translations to Twosky/Crowdin.
+- `pnpm run increment`: bumps the patch version in `package.json` without a
+  git tag.
 
 ### Userscript Metadata Model
 
@@ -216,12 +221,21 @@ const releaseChannels = {
 Run these commands before finishing code or metadata changes:
 
 ```sh
-yarn lint
-yarn dev
+pnpm run lint
+pnpm run dev
+pnpm run test
 ```
 
-`yarn lint`, `yarn dev`, `yarn beta`, and `yarn release` were verified in this
-workspace on 2026-05-04.
+Run wrapper-level tests when a local userscripts-wrapper checkout is available:
+
+```sh
+pnpm run dev
+USERSCRIPTS_WRAPPER_DIR=/Volumes/dev/userscripts-wrapper pnpm run test:wrapper
+```
+
+`pnpm run lint`, `pnpm run dev`, `pnpm run test`,
+`pnpm run test:wrapper`, `pnpm run beta`, and `pnpm run release` were verified
+in this workspace on 2026-05-04.
 
 No formatter or type checker command is configured. Avoid formatting-only churn
 and rely on ESLint plus the Webpack build for automated checks.
@@ -239,7 +253,7 @@ Google Images, generic AMP pages, or Yandex Turbo pages.
 - Update `CHANGELOG.md` for user-visible behavior changes.
 - Update `README.md` if install links, build commands, or user-facing behavior
   change.
-- Run `yarn lint` and `yarn dev` before opening a PR.
+- Run `pnpm run lint`, `pnpm run dev`, and `pnpm run test` before opening a PR.
 - Mention any manual browser checks performed in the PR or final task summary.
 
 ## Common Tasks
@@ -249,7 +263,7 @@ Google Images, generic AMP pages, or Yandex Turbo pages.
 1. Edit include patterns in `meta.template.js`.
 2. Add site exclusions in `src/exclusions.js` when the userscript must not run
    on a matching origin or path.
-3. Run `yarn dev`.
+3. Run `pnpm run dev`.
 4. Inspect `build/dev/disable-amp.meta.js` to confirm generated metadata.
 5. Manually load `build/dev/disable-amp.user.js` and test the affected page.
 
@@ -259,20 +273,20 @@ Google Images, generic AMP pages, or Yandex Turbo pages.
 2. Edit metadata placeholders in `meta.template.js` only when the generated
    header structure needs to change.
 3. For localized fields, update `locales/en/messages.json` first.
-4. Run `yarn dev` and inspect `build/dev/disable-amp.meta.js`.
+4. Run `pnpm run dev` and inspect `build/dev/disable-amp.meta.js`.
 
 ### Sync Translations
 
 Download translations:
 
 ```sh
-yarn locales:download
+pnpm run locales:download
 ```
 
 Upload the base locale:
 
 ```sh
-yarn locales:upload
+pnpm run locales:upload
 ```
 
 These commands call `https://twosky.int.agrd.dev/api/v1` and can change many
@@ -283,7 +297,7 @@ files under `locales/`. Review the diff carefully before committing.
 Use the project script when a task requires a patch version bump:
 
 ```sh
-yarn increment
+pnpm run increment
 ```
 
 This mutates `package.json`. It does not create a git tag.
@@ -313,32 +327,32 @@ Fix:
 
 ```sh
 npx update-browserslist-db@latest
-yarn dev
+pnpm run dev
 ```
 
-### Yarn Prints Url Parse Deprecation
+### Package Manager
 
-Symptom on newer Node.js versions:
-
-```text
-[DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized
-```
-
-This warning comes from Yarn 1.x running on Node.js 24. It does not block
-`yarn install --frozen-lockfile`, `yarn lint`, or Webpack builds. Use Node.js
-22.11.x if you need to match the CI image exactly.
-
-### Yarn Test Is Missing
-
-`package.json` does not define a `test` script. Use this verification path until
-a test harness exists:
+The repository uses pnpm. If pnpm is missing, install the pinned package
+manager version:
 
 ```sh
-yarn lint
-yarn dev
+PNPM_VERSION="$(node -p "require('./package.json').packageManager.split('@').pop()")"
+npm install --global "pnpm@${PNPM_VERSION}"
 ```
 
-### Locales Script Prints Option Missing
+### Wrapper Test Needs Environment
+
+`pnpm run test:wrapper` needs a built userscripts-wrapper checkout. The wrapper
+repository still uses Yarn, so build it there first, then pass its path:
+
+```sh
+cd /Volumes/dev/userscripts-wrapper && yarn build
+cd /Volumes/dev/wt/disable-amp/fix-AG-53935
+pnpm run dev
+USERSCRIPTS_WRAPPER_DIR=/Volumes/dev/userscripts-wrapper pnpm run test:wrapper
+```
+
+### Locales Option Missing
 
 Symptom:
 
@@ -349,15 +363,15 @@ Option DOWNLOAD/UPLOAD locales is not set
 Run one of the package scripts instead of calling `node locales.js` directly:
 
 ```sh
-yarn locales:download
-yarn locales:upload
+pnpm run locales:download
+pnpm run locales:upload
 ```
 
-### Built Script Does Not Run On A Page
+### Built Script Does Not Run
 
 - Check whether `meta.template.js` has an `@include` pattern for the page URL.
 - Check whether `src/exclusions.js` adds an `@exclude` pattern for the page URL.
-- Rebuild with `yarn dev` after metadata changes.
+- Rebuild with `pnpm run dev` after metadata changes.
 - Reload or reinstall `build/dev/disable-amp.user.js` in the userscript host.
 
 ### Generated Files Keep Changing

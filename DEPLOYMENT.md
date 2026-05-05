@@ -75,11 +75,11 @@ release naming and git tagging.
     - Used by: `locales.js`.
     - Purpose: selects translation sync mode. Not used by deployed runtime.
     - Example: `DOWNLOAD`.
-- `YARN_CACHE_FOLDER`
+- `PNPM_HOME`
     - Required: no.
     - Used by: `Dockerfile`.
-    - Purpose: sets Yarn cache path inside the build image.
-    - Example: `/yarn-cache`.
+  - Purpose: sets pnpm executable path inside the build image.
+  - Example: `/pnpm`.
 - `bamboo_buildNumber`
     - Required: yes for CI cleanup.
     - Used by: `bamboo-specs/scripts/cleanup.sh`.

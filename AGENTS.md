@@ -34,14 +34,16 @@ Babel, a custom metadata plugin, and locale files to generate installable
 ## Technical Context
 
 - **Language/Version**: JavaScript. No `engines` field is declared in
-  `package.json`; the Docker build image is `adguard/node-ssh:22.11--0`.
+  `package.json`; the Docker build image is `adguard/node-ssh:22.17--0`.
 - **Primary Dependencies**: Webpack 5, Babel, ESLint with Airbnb base config,
   `copy-webpack-plugin`, `clean-webpack-plugin`, `replace-in-file`, `glob`,
   `cp-file`, `fs-extra`, `axios`, and `form-data`.
 - **Storage**: No runtime storage. Build-time configuration and translations
   are stored in repository files.
-- **Testing**: No automated test runner is configured in `package.json`.
-  Current CI test stage runs `yarn lint && yarn dev`.
+- **Testing**: Metadata checks and Playwright e2e tests are configured in
+  `package.json`. CI runs lint, dev build, metadata tests, and direct browser
+  smoke tests. Userscripts-wrapper e2e tests are local-only and require
+  `USERSCRIPTS_WRAPPER_DIR`.
 - **Target Platform**: Browser userscript hosts and AdGuard for Android.
   `browserslist` targets IE 11 for transpilation compatibility.
 - **Project Type**: Browser userscript, closest to a content-script style
@@ -65,37 +67,46 @@ Babel, a custom metadata plugin, and locale files to generate installable
 │   ├── utils.js                 # Shared DOM and URL helpers
 │   └── exclusions.js            # Userscript @exclude URL patterns
 ├── locales/                     # Localized metadata messages
+├── tests/                       # Metadata and Playwright e2e tests
+│   ├── metadata.test.ts         # Generated metadata regression checks
+│   ├── e2e/                     # Direct built-userscript browser tests
+│   └── wrapper/                 # userscripts-wrapper integration tests
 ├── bamboo-specs/                # CI build and deployment specs
-├── build/                       # Generated build artifacts, ignored by git
+├── build/                       # Generated artifacts, ignored by git
 ├── webpack.config.js            # Webpack build for dev, beta, release
 ├── metadata.plugin.js           # Custom userscript metadata generator
 ├── meta.settings.js             # Metadata fields per release channel
 ├── meta.template.js             # Userscript header template
 ├── locales.js                   # Translation download/upload script
 ├── babel.config.js              # Babel preset configuration
+├── playwright.config.ts         # Browser e2e test configuration
 ├── .eslintrc.js                 # ESLint rules
 ├── .twosky.json                 # Translation project mapping
 ├── Dockerfile                   # CI test and build plans
-├── package.json                 # Yarn scripts and dependencies
-├── yarn.lock                    # Locked dependency resolution
+├── package.json                 # pnpm scripts and dependencies
+├── pnpm-lock.yaml               # Locked dependency resolution
 ├── README.md                    # User manual and install links
 ├── DEVELOPMENT.md               # Local setup and contributor workflow
-├── DEPLOYMENT.md                # Production artifact publishing reference
+├── DEPLOYMENT.md                # Production publishing reference
 └── CHANGELOG.md                 # Release history
 ```
 
 ## Build And Test Commands
 
-- `yarn dev` builds a development userscript into `build/dev`.
-- `yarn beta` builds a beta userscript into `build/beta`.
-- `yarn release` builds a production userscript into `build/release`.
-- `yarn watch` runs the development build in watch mode.
-- `yarn lint` runs ESLint against `src/`.
-- `yarn locales:download` downloads translations from Twosky/Crowdin.
-- `yarn locales:upload` uploads base translations to Twosky/Crowdin.
-- `yarn increment` bumps the patch version in `package.json` without a git tag.
-- There is no configured `yarn test` script. Use `yarn lint && yarn dev` as the
-  current verification path unless a task adds an actual test command.
+- `pnpm run dev` builds a development userscript into `build/dev`.
+- `pnpm run beta` builds a beta userscript into `build/beta`.
+- `pnpm run release` builds a production userscript into `build/release`.
+- `pnpm run watch` runs the development build in watch mode.
+- `pnpm run lint` runs ESLint against `src/`.
+- `pnpm run test` runs metadata and direct browser smoke tests.
+- `pnpm run test:metadata` checks generated metadata patterns.
+- `pnpm run test:e2e` runs direct Playwright browser smoke tests.
+- `pnpm run test:wrapper` runs wrapper-level e2e tests and requires
+  `USERSCRIPTS_WRAPPER_DIR`.
+- `pnpm run locales:download` downloads translations from Twosky/Crowdin.
+- `pnpm run locales:upload` uploads base translations to Twosky/Crowdin.
+- `pnpm run increment` bumps the patch version in `package.json` without a git
+  tag.
 
 ## Contribution Instructions
 
@@ -103,18 +114,23 @@ Babel, a custom metadata plugin, and locale files to generate installable
   or build checks.
 
   Use the following commands:
-    - `yarn lint` to run the linter.
-    - No formatter command is configured; do not introduce formatting-only churn.
-    - No type checker is configured; use `yarn dev` as the build and syntax
+    - `pnpm run lint` to run the linter.
+    - No formatter command is configured; avoid formatting-only churn.
+    - No type checker is configured; use `pnpm run dev` as the build and syntax
       verification command.
-    - `yarn dev` to verify the development bundle and generated metadata.
+    - `pnpm run dev` to verify the development bundle and generated metadata.
+    - `pnpm run test` to run metadata and direct browser smoke tests.
+    - `pnpm run test:wrapper` when userscripts-wrapper behavior is touched or
+      when changing userscript match patterns.
 
 - You MUST update unit tests for changed code. If no test harness exists for the
   touched behavior, document that gap in the final response and prefer adding
   focused tests when the task scope allows it.
 
 - You MUST make all tests pass before finishing. In the current repository, that
-  means `yarn lint && yarn dev`; if a test script is added later, run it too.
+  means `pnpm run lint`, `pnpm run dev`, and `pnpm run test`. Run
+  `pnpm run test:wrapper` when wrapper behavior or userscript match patterns
+  are touched.
 
 - When making changes to the project structure, ensure the Project Structure
   section in `AGENTS.md` is updated and remains valid.
@@ -128,7 +144,7 @@ Babel, a custom metadata plugin, and locale files to generate installable
 
 - When changing URL match behavior, update the userscript include or exclude
   patterns in `meta.template.js` or `src/exclusions.js` and verify generated
-  metadata with `yarn dev`.
+  metadata with `pnpm run dev`.
 
 - When changing localized metadata keys, update `locales/en/messages.json` and
   keep `meta.settings.js` field names consistent with those keys.
@@ -149,8 +165,8 @@ Design for a browser userscript environment:
   repeated across navigations, frames, and dynamically updated pages.
 - Use DOM observation carefully. `MutationObserver` callbacks should be small,
   idempotent, and safe to run multiple times.
-- Never block the page main thread with long loops, synchronous network calls, or
-  heavy parsing.
+- Never block the page main thread with long loops, synchronous network calls,
+  or heavy parsing.
 - Design for updates by keeping metadata generation deterministic and by
   preserving existing include, exclude, download, and update URL behavior unless
   the task explicitly changes it.
@@ -233,12 +249,15 @@ build tooling.
 
 ### Testing
 
-- No automated unit test harness is currently configured. There is no `test`
-  script in `package.json` until a test harness is introduced.
-- Use `yarn lint && yarn dev` as the minimum verification path for source and
-  metadata changes.
+- Use `pnpm run lint`, `pnpm run dev`, and `pnpm run test` as the minimum
+  verification path for source and metadata changes.
+- `pnpm run test:metadata` validates generated userscript metadata. Run it
+  after changing include, exclude, locale metadata, or template fields.
+- `pnpm run test:e2e` runs direct Playwright smoke tests against local fixtures.
+- `pnpm run test:wrapper` runs e2e tests through userscripts-wrapper. It
+  requires a built wrapper checkout in `USERSCRIPTS_WRAPPER_DIR`.
 - For URL parsing, canonical extraction, and redirect decisions, prefer adding
-  focused unit tests if a test harness is introduced.
+  focused tests near the touched behavior.
 - For userscript behavior, manually verify representative Google Search, Google
   News, Google Images, generic AMP pages, and Yandex Turbo pages when the task
   touches those paths.
@@ -339,5 +358,5 @@ and AI agents that consume project documentation.
   not reorder unrelated locale fields or exclude entries.
 - Preserve Keep a Changelog style in `CHANGELOG.md` and reference related issue
   numbers when known.
-- Use `yarn increment` for patch version bumps when a task requires a package
-  version update.
+- Use `pnpm run increment` for patch version bumps when a task requires a
+  package version update.

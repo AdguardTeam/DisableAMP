@@ -3,6 +3,7 @@
 node_modules
 build
 /tests/dist/
+test-results/
 .idea
 
 # Output directory for CI build

@@ -27,7 +27,8 @@ Test:
             # Fix mixed logs
             exec 2>&1
 
-            docker build \
+            docker buildx build \
+              --build-arg TEST_RUN_ID=${bamboo.buildNumber} \
               --file Dockerfile \
               --progress plain \
               --target test-output \
