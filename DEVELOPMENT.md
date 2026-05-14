@@ -37,7 +37,7 @@ Developer guide for setting up, running, and changing Disable AMP locally.
 ### Required Tools
 
 - Node.js 22.17.x is the CI baseline. The Docker build image is
-  `adguard/node-ssh:22.17--0`.
+  `adguard/node-ssh:22.22--0`.
 - Node.js 24.14.0 is also verified locally in this workspace on 2026-05-04.
 - pnpm 10.x is required. The exact version is pinned in `package.json`.
 - A userscript host is needed for manual browser checks. Use AdGuard for
