@@ -1,9 +1,8 @@
 {
     "name": "disable-amp",
-    "version": "1.0.74",
+    "version": "1.0.75",
     "author": "adguard@adguard.com",
     "license": "LGPL-3.0",
-    "packageManager": "pnpm@10.33.2",
     "scripts": {
         "prepare": "node .husky/install.js",
         "dev": "NODE_ENV=DEV ./node_modules/.bin/webpack",
@@ -19,6 +18,10 @@
         "locales:download": "LOCALES=DOWNLOAD node locales.js",
         "locales:upload": "LOCALES=UPLOAD node locales.js",
         "increment": "pnpm version patch --no-git-tag-version"
+    },
+    "engines": {
+        "node": ">=22",
+        "pnpm": ">=10.33.4 <11"
     },
     "browserslist": [
         "ie 11"
