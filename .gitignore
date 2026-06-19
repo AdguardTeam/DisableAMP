@@ -8,3 +8,5 @@ test-results/
 
 # Output directory for CI build
 output/
+
+.sdd/
