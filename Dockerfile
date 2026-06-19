@@ -21,7 +21,7 @@ COPY . .
 # =============================================================================
 
 FROM mcr.microsoft.com/playwright:v1.59.1-noble AS test-base
-ARG PNPM_VERSION=10.33.2
+ARG PNPM_VERSION=10.33.4
 WORKDIR /workdir
 ENV PNPM_HOME=/pnpm
 ENV PATH=${PNPM_HOME}:${PATH}
