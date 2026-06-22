@@ -22,18 +22,19 @@ Disable AMP has no long-running production server. Production consists of static
 userscript files published to `userscripts.adtidy.org` and executed by userscript
 hosts or AdGuard for Android.
 
-Deployment is handled by Bamboo deployment plans:
+Deployment is handled by GitHub Actions (`publish-release.yml`):
 
-- `disable-amp - deploy beta` publishes beta artifacts from source plan
-  `ADGEXT-DABSPECS`.
-- `disable-amp - deploy release` publishes release artifacts from source plan
-  `ADGEXT-DARELEASESPECS`.
-- Both deployment plans target the `userscripts.adtidy.org` environment.
-- Both plans download build artifacts and call
-  `bamboo-deploy-publisher/deploy.sh` with the channel name.
+- The `deploy-static-beta` job uploads beta artifacts to the Deployer module
+  `disable-amp-beta`.
+- The `deploy-static-release` job uploads release artifacts to the Deployer
+  module `disable-amp-release`.
+- Both jobs target the `userscripts.adtidy.org` environment via the
+  `deploy-to-static.yml` reusable workflow.
+- The `gh-release` job also creates a GitHub Release with the compiled
+  userscript attached as an asset.
 
-CI/CD pipeline details live in `bamboo-specs/`; this document only records the
-production deployment configuration and runtime dependencies.
+CI/CD pipeline details live in `.github/workflows/`; this document only
+records the production deployment configuration and runtime dependencies.
 
 ## Release Channels
 
@@ -58,9 +59,9 @@ Each production deployment publishes these required artifacts:
 - `disable-amp.user.js`: userscript metadata plus bundled runtime code.
 - `disable-amp.meta.js`: userscript metadata for update checks.
 
-Build plans also generate `variables.txt`, which contains `version=<package
-version>`. Bamboo injects that value as `bamboo.userscriptMeta.version` for
-release naming and git tagging.
+The release version is parsed from `CHANGELOG.md` by `tag-from-changelog.yml`
+and injected into `package.json` at build time. The compiled userscript
+metadata carries the release tag version.
 
 ## Environment Variables
 
@@ -80,13 +81,6 @@ release naming and git tagging.
     - Used by: `Dockerfile`.
   - Purpose: sets pnpm executable path inside the build image.
   - Example: `/pnpm`.
-- `bamboo_buildNumber`
-    - Required: yes for CI cleanup.
-    - Used by: `bamboo-specs/scripts/cleanup.sh`.
-    - Purpose: proves cleanup runs inside Bamboo before wiping the disposable
-      workspace.
-    - Example: `1234`.
-
 No runtime environment variables are required after artifacts are published. The
 userscript runs entirely in the browser page context.
 
@@ -94,13 +88,11 @@ userscript runs entirely in the browser page context.
 
 - **Static artifact hosting**: `userscripts.adtidy.org` serves beta and release
   userscript files.
-- **Bamboo deployment environment**: The deployment environment name is
-  `userscripts.adtidy.org`; deploy permissions are granted to the
-  `extensions-developers` group.
-- **Deployment publisher**: Deployment plans checkout the
-  `bamboo-deploy-publisher` repository and run its `deploy.sh` script with
-  `disable-amp-beta` or `disable-amp-release`.
-- **Build container**: Docker stages use `adguard/node-ssh:22.11--0` and emit
+- **Deployer service**: The `deploy-to-static.yml` workflow uploads artifacts
+  to `${DEPLOYER_BASE_URL}/disable-amp-beta` and
+  `${DEPLOYER_BASE_URL}/disable-amp-release` (org variable
+  `DEPLOYER_BASE_URL`).
+- **Build container**: Docker stages use `adguard/node-ssh:22.22--0` and emit
   artifacts from scratch output stages.
 
 There are no production databases, caches, queues, object storage clients, or
@@ -128,9 +120,8 @@ external service.
 ## Logging
 
 - Runtime userscript code does not intentionally emit production logs.
-- Build and deployment scripts write plain text logs to Bamboo stdout/stderr.
-  Bamboo scripts use `set -x` and redirect stderr to stdout for a single log
-  stream.
+- Build and deployment scripts write plain text logs to GitHub Actions
+  stdout/stderr. Docker build steps use `--progress plain` for readable logs.
 - `locales.js` writes translation sync success and error messages with
   `console.log` when `LOCALES` is set.
 
@@ -144,8 +135,9 @@ the beta and release URLs.
 
 ## Security Notes
 
-- Do not commit secrets. Credentials for Bamboo, `bamboo-deploy-publisher`, or
-  Twosky/Crowdin must be managed outside this repository.
+- Do not commit secrets. Credentials for Twosky/Crowdin must be managed
+  outside this repository. The Deployer service uses the org variable
+  `DEPLOYER_BASE_URL` — no secrets are required for static deploys.
 - Keep `@include` and `@exclude` metadata patterns as narrow as possible because
   they control where the userscript executes.
 - Do not publish artifacts that were not generated from the expected beta or

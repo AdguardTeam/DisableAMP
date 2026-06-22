@@ -161,6 +161,10 @@ open, the browser or userscript host, and whether you use stable or beta.
 
 ## Documentation
 
+> **Repository**: Development happens in the private repo
+> `AdGuardSoftwareLimited/ext-disable-amp`. A public mirror is available at
+> [`AdguardTeam/DisableAMP`](https://github.com/AdguardTeam/DisableAMP).
+
 - [Development](DEVELOPMENT.md)
 - [LLM agent rules](AGENTS.md)
 - [Deployment and configuration](DEPLOYMENT.md)

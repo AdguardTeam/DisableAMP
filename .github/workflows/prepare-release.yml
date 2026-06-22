@@ -12,6 +12,8 @@ on:
         required: true
         type: string
 
+# `contents: write` — push the release-bump branch
+# `id-token: write` — Octopass OIDC for PR creation
 permissions:
   contents: write
   id-token: write
