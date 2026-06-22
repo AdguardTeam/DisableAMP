@@ -5,6 +5,10 @@ Turbo pages as their original non-AMP pages. It is for people who browse with
 AdGuard for Android or a userscript manager and prefer canonical website pages
 instead of AMP wrappers.
 
+> **Repository**: Development happens in the private repo
+> `AdGuardSoftwareLimited/ext-disable-amp`. A public mirror is available at
+> [`AdguardTeam/DisableAMP`](https://github.com/AdguardTeam/DisableAMP).
+
 ## Table Of Contents
 
 - [What It Does](#what-it-does)
@@ -160,10 +164,6 @@ When reporting a problem, include the original URL, the URL you expected to
 open, the browser or userscript host, and whether you use stable or beta.
 
 ## Documentation
-
-> **Repository**: Development happens in the private repo
-> `AdGuardSoftwareLimited/ext-disable-amp`. A public mirror is available at
-> [`AdguardTeam/DisableAMP`](https://github.com/AdguardTeam/DisableAMP).
 
 - [Development](DEVELOPMENT.md)
 - [LLM agent rules](AGENTS.md)
