@@ -1,0 +1,98 @@
+name: Publish release
+
+description: >-
+  Tags the release commit, builds, tests, deploys the compiled userscript to
+  userscripts.adtidy.org (beta + release channels) and to a GitHub Release,
+  then notifies Slack.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Ref to publish manually
+        required: false
+        type: string
+
+jobs:
+  tag:
+    uses: AdGuardSoftwareLimited/actions/.github/workflows/tag-from-changelog.yml@master
+    with:
+      ref: ${{ inputs.ref || github.event.pull_request.merge_commit_sha || github.ref_name }}
+      team: extensions
+    permissions:
+      contents: write
+
+  build:
+    name: Test and build
+    needs: tag
+    runs-on: team-extensions
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.ref || github.event.pull_request.merge_commit_sha || github.ref_name }}
+
+      - name: Lint and test
+        run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
+
+      - name: Build release artifacts
+        run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
+
+      - name: Upload userscript artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: userscript
+          path: |
+            artifacts/disable-amp.user.js
+            artifacts/disable-amp.meta.js
+
+  deploy-static-beta:
+    needs: build
+    uses: AdGuardSoftwareLimited/actions/.github/workflows/deploy-to-static.yml@master
+    with:
+      team: extensions
+      deployer-module: disable-amp-beta
+      artifact-pattern: userscript
+      file-mappings: '{"disable-amp-beta.user.js": "disable-amp.user.js", "disable-amp-beta.meta.js": "disable-amp.meta.js"}'
+      environment: beta-static
+    permissions:
+      contents: read
+
+  deploy-static-release:
+    needs: build
+    uses: AdGuardSoftwareLimited/actions/.github/workflows/deploy-to-static.yml@master
+    with:
+      team: extensions
+      deployer-module: disable-amp-release
+      artifact-pattern: userscript
+      file-mappings: '{"disable-amp.user.js": "disable-amp.user.js", "disable-amp.meta.js": "disable-amp.meta.js"}'
+      environment: production-static
+    permissions:
+      contents: read
+
+  gh-release:
+    needs: [tag, build]
+    uses: AdGuardSoftwareLimited/actions/.github/workflows/create-gh-release.yml@master
+    with:
+      tag_name: ${{ needs.tag.outputs.tag }}
+      body: ${{ needs.tag.outputs.changelog }}
+      artifact_name: userscript
+      team: extensions
+    permissions:
+      contents: write
+
+  notify:
+    name: Notify
+    needs: [tag, gh-release, deploy-static-beta, deploy-static-release]
+    if: ${{ always() && needs.gh-release.result == 'success' }}
+    runs-on: team-extensions
+    steps:
+      - name: Send Slack notification
+        uses: AdGuardSoftwareLimited/actions/actions/slack@master
+        with:
+          channel: '#adguard-extension-vcs'
+          message: ':white_check_mark: *ext-disable-amp* *${{ needs.tag.outputs.tag }}* deployed to userscripts.adtidy.org + GitHub Release — <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|view run>'
+          color: good

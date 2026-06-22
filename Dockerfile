@@ -70,3 +70,6 @@ FROM scratch AS build-release-output
 COPY --from=build-release /workdir/build/release/variables.txt /artifacts/variables.txt
 COPY --from=build-release /workdir/build/release/disable-amp.meta.js /artifacts/disable-amp.meta.js
 COPY --from=build-release /workdir/build/release/disable-amp.user.js /artifacts/disable-amp.user.js
+
+# Alias used by publish-release.yml to fetch the compiled release userscript.
+FROM build-release-output AS build-output
