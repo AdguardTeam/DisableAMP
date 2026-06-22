@@ -28,12 +28,12 @@ build:
 
 - **Beta tags** (e.g. `v1.0.75-beta.1`) — deploy only to the beta channel
   and create a GitHub Release marked as a **prerelease**.
-- **Stable tags** (e.g. `v1.0.75`) — deploy to both the beta and release
-  channels and create a full GitHub Release.
+- **Stable tags** (e.g. `v1.0.75`) — deploy only to the release channel
+  and create a full GitHub Release.
 
 | Job | Beta tag | Stable tag |
 | --- | --- | --- |
-| `deploy-static-beta` | ✅ runs | ✅ runs |
+| `deploy-static-beta` | ✅ runs | ⊘ skipped |
 | `deploy-static-release` | ⊘ skipped | ✅ runs |
 | `gh-release` | prerelease = `true` | prerelease = `false` |
 
@@ -58,8 +58,8 @@ records the production deployment configuration and runtime dependencies.
     - Metadata URL:
       `https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.meta.js`
 
-The release channel is only updated for stable tags. Beta tags update the beta
-channel exclusively.
+The release channel is only updated for stable tags. The beta channel is only
+updated for beta tags. The two channels are mutually exclusive.
 
 The URLs are configured in `meta.settings.js` and rendered into userscript
 metadata through `meta.template.js`.
