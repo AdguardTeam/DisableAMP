@@ -22,16 +22,25 @@ Disable AMP has no long-running production server. Production consists of static
 userscript files published to `userscripts.adtidy.org` and executed by userscript
 hosts or AdGuard for Android.
 
-Deployment is handled by GitHub Actions (`publish-release.yml`):
+Deployment is handled by GitHub Actions (`publish-release.yml`). The tag
+name entered in `prepare-release.yml` determines which channels receive the
+build:
 
-- The `deploy-static-beta` job uploads beta artifacts to the Deployer module
-  `disable-amp-beta`.
-- The `deploy-static-release` job uploads release artifacts to the Deployer
-  module `disable-amp-release`.
-- Both jobs target the `userscripts.adtidy.org` environment via the
-  `deploy-to-static.yml` reusable workflow.
-- The `gh-release` job also creates a GitHub Release with the compiled
-  userscript attached as an asset.
+- **Beta tags** (e.g. `v1.0.75-beta.1`) — deploy only to the beta channel
+  and create a GitHub Release marked as a **prerelease**.
+- **Stable tags** (e.g. `v1.0.75`) — deploy to both the beta and release
+  channels and create a full GitHub Release.
+
+| Job | Beta tag | Stable tag |
+| --- | --- | --- |
+| `deploy-static-beta` | ✅ runs | ✅ runs |
+| `deploy-static-release` | ⊘ skipped | ✅ runs |
+| `gh-release` | prerelease = `true` | prerelease = `false` |
+
+The `deploy-static-beta` job uploads to the Deployer module `disable-amp-beta`;
+`deploy-static-release` uploads to `disable-amp-release`. Both use the
+`deploy-to-static.yml` reusable workflow targeting the `userscripts.adtidy.org`
+environment.
 
 CI/CD pipeline details live in `.github/workflows/`; this document only
 records the production deployment configuration and runtime dependencies.
@@ -48,6 +57,9 @@ records the production deployment configuration and runtime dependencies.
       `https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.user.js`
     - Metadata URL:
       `https://userscripts.adtidy.org/release/disable-amp/1.0/disable-amp.meta.js`
+
+The release channel is only updated for stable tags. Beta tags update the beta
+channel exclusively.
 
 The URLs are configured in `meta.settings.js` and rendered into userscript
 metadata through `meta.template.js`.
