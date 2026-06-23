@@ -262,7 +262,7 @@ Google Images, generic AMP pages, or Yandex Turbo pages.
 
 ### Running the Full CI Pipeline Locally
 
-The GitHub Actions CI (`.github/workflows/build.yml`) runs lint, test, and
+The GitHub Actions CI (`.github/workflows/ci.yml`) runs lint, test, and
 build inside Docker. To reproduce the same pipeline locally:
 
 ```sh

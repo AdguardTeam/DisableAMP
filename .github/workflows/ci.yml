@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 description: Lints, tests, and builds on pull requests and pushes to master.
 
