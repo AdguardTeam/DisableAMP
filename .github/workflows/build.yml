@@ -18,3 +18,15 @@ jobs:
 
       - name: Build and test via Docker
         run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
+
+      - name: Build release artifacts
+        run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: userscript-build
+          path: |
+            artifacts/disable-amp.user.js
+            artifacts/disable-amp.meta.js
+          retention-days: 14
