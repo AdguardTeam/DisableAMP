@@ -29,4 +29,4 @@ jobs:
           path: |
             artifacts/disable-amp.user.js
             artifacts/disable-amp.meta.js
-          retention-days: 14
+          retention-days: 7
