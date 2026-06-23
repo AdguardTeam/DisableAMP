@@ -44,8 +44,8 @@ RUN echo "test run id: ${TEST_RUN_ID}" && \
     pnpm run test
 
 FROM scratch AS test-output
-COPY --from=test /workdir/build/dev/disable-amp.meta.js /artifacts/disable-amp.meta.js
-COPY --from=test /workdir/build/dev/disable-amp.user.js /artifacts/disable-amp.user.js
+COPY --from=test /workdir/build/dev/disable-amp.meta.js /disable-amp.meta.js
+COPY --from=test /workdir/build/dev/disable-amp.user.js /disable-amp.user.js
 
 # =============================================================================
 # Build beta plan
@@ -55,9 +55,9 @@ FROM source-deps AS build-beta
 RUN pnpm run beta
 
 FROM scratch AS build-beta-output
-COPY --from=build-beta /workdir/build/beta/variables.txt /artifacts/variables.txt
-COPY --from=build-beta /workdir/build/beta/disable-amp.meta.js /artifacts/disable-amp.meta.js
-COPY --from=build-beta /workdir/build/beta/disable-amp.user.js /artifacts/disable-amp.user.js
+COPY --from=build-beta /workdir/build/beta/variables.txt /variables.txt
+COPY --from=build-beta /workdir/build/beta/disable-amp.meta.js /disable-amp.meta.js
+COPY --from=build-beta /workdir/build/beta/disable-amp.user.js /disable-amp.user.js
 
 # =============================================================================
 # Build release plan
@@ -67,9 +67,9 @@ FROM source-deps AS build-release
 RUN pnpm run release
 
 FROM scratch AS build-release-output
-COPY --from=build-release /workdir/build/release/variables.txt /artifacts/variables.txt
-COPY --from=build-release /workdir/build/release/disable-amp.meta.js /artifacts/disable-amp.meta.js
-COPY --from=build-release /workdir/build/release/disable-amp.user.js /artifacts/disable-amp.user.js
+COPY --from=build-release /workdir/build/release/variables.txt /variables.txt
+COPY --from=build-release /workdir/build/release/disable-amp.meta.js /disable-amp.meta.js
+COPY --from=build-release /workdir/build/release/disable-amp.user.js /disable-amp.user.js
 
 # Alias used by publish-release.yml to fetch the compiled release userscript.
 FROM build-release-output AS build-output
