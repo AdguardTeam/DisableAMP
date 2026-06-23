@@ -56,32 +56,17 @@ jobs:
             artifacts/disable-amp.user.js
             artifacts/disable-amp.meta.js
 
-  deploy-static-beta:
-    # Only deploy to the beta channel for beta tags (with `-beta` suffix)
-    if: ${{ contains(needs.tag.outputs.tag, '-beta') }}
+  deploy-static:
+    # Deploys to the beta channel for beta tags (with `-beta` suffix)
+    # or to the release channel for stable tags.
     needs: [tag, build]
     uses: AdGuardSoftwareLimited/actions/.github/workflows/deploy-to-static.yml@master
     with:
       team: extensions
-      deployer-module: disable-amp-beta
+      deployer-module: ${{ contains(needs.tag.outputs.tag, '-beta') && 'disable-amp-beta' || 'disable-amp-release' }}
       artifact-pattern: userscript
-      file-mappings: '{"disable-amp-beta.user.js": "disable-amp.user.js", "disable-amp-beta.meta.js": "disable-amp.meta.js"}'
-      environment: beta-static
-    # `contents: read` — download artifact only
-    permissions:
-      contents: read
-
-  deploy-static-release:
-    # Only deploy to the release channel for stable tags (no `-beta` suffix)
-    if: ${{ !contains(needs.tag.outputs.tag, '-beta') }}
-    needs: [tag, build]
-    uses: AdGuardSoftwareLimited/actions/.github/workflows/deploy-to-static.yml@master
-    with:
-      team: extensions
-      deployer-module: disable-amp-release
-      artifact-pattern: userscript
-      file-mappings: '{"disable-amp.user.js": "disable-amp.user.js", "disable-amp.meta.js": "disable-amp.meta.js"}'
-      environment: production-static
+      file-mappings: ${{ contains(needs.tag.outputs.tag, '-beta') && '{"disable-amp-beta.user.js": "disable-amp.user.js", "disable-amp-beta.meta.js": "disable-amp.meta.js"}' || '{"disable-amp.user.js": "disable-amp.user.js", "disable-amp.meta.js": "disable-amp.meta.js"}' }}
+      environment: ${{ contains(needs.tag.outputs.tag, '-beta') && 'beta-static' || 'production-static' }}
     # `contents: read` — download artifact only
     permissions:
       contents: read
@@ -101,8 +86,7 @@ jobs:
 
   notify:
     name: Notify
-    needs: [tag, gh-release, deploy-static-beta, deploy-static-release]
-    # Runs even if one deploy was skipped (beta-only or release-only)
+    needs: [tag, gh-release, deploy-static]
     if: ${{ always() && needs.gh-release.result == 'success' }}
     runs-on: team-extensions
     steps:
