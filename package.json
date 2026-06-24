@@ -1,9 +1,17 @@
 {
     "name": "disable-amp",
-    "version": "1.0.74",
     "author": "adguard@adguard.com",
     "license": "LGPL-3.0",
     "packageManager": "pnpm@10.33.2",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AdGuardSoftwareLimited/ext-disable-amp.git",
+        "directory": ""
+    },
+    "homepage": "https://github.com/AdGuardSoftwareLimited/ext-disable-amp#readme",
+    "bugs": {
+        "url": "https://github.com/AdGuardSoftwareLimited/ext-disable-amp/issues"
+    },
     "scripts": {
         "prepare": "node .husky/install.js",
         "dev": "NODE_ENV=DEV ./node_modules/.bin/webpack",
@@ -17,8 +25,7 @@
         "test:e2e": "playwright test tests/e2e",
         "test:wrapper": "playwright test tests/wrapper",
         "locales:download": "LOCALES=DOWNLOAD node locales.js",
-        "locales:upload": "LOCALES=UPLOAD node locales.js",
-        "increment": "pnpm version patch --no-git-tag-version"
+        "locales:upload": "LOCALES=UPLOAD node locales.js"
     },
     "browserslist": [
         "ie 11"

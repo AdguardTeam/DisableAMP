@@ -17,6 +17,7 @@ Developer guide for setting up, running, and changing Disable AMP locally.
     - [Userscript Metadata Model](#userscript-metadata-model)
     - [Verification](#verification)
     - [Contribution Flow](#contribution-flow)
+    - [Running the Full CI Pipeline Locally](#running-the-full-ci-pipeline-locally)
 - [Common Tasks](#common-tasks)
     - [Change Userscript Match Patterns](#change-userscript-match-patterns)
     - [Change Metadata Fields](#change-metadata-fields)
@@ -67,6 +68,11 @@ pnpm install --frozen-lockfile
 
 Use `--frozen-lockfile` so local installs match `pnpm-lock.yaml` and CI
 behavior.
+
+> **Repository**: Clone from the private repo
+> `https://github.com/AdGuardSoftwareLimited/ext-disable-amp.git`. A public
+> mirror at `AdguardTeam/DisableAMP` is synced automatically but should not be
+> used for development.
 
 ### Configure Environment
 
@@ -144,8 +150,6 @@ change source files and rebuild instead.
   `USERSCRIPTS_WRAPPER_DIR`.
 - `pnpm run locales:download`: downloads translations from Twosky/Crowdin.
 - `pnpm run locales:upload`: uploads base translations to Twosky/Crowdin.
-- `pnpm run increment`: bumps the patch version in `package.json` without a
-  git tag.
 
 ### Userscript Metadata Model
 
@@ -256,6 +260,26 @@ Google Images, generic AMP pages, or Yandex Turbo pages.
 - Run `pnpm run lint`, `pnpm run dev`, and `pnpm run test` before opening a PR.
 - Mention any manual browser checks performed in the PR or final task summary.
 
+### Running the Full CI Pipeline Locally
+
+The GitHub Actions CI (`.github/workflows/ci.yml`) runs lint, test, and
+build inside Docker. To reproduce the same pipeline locally:
+
+```sh
+# Lint + test + dev build (matches the test-output Docker target)
+DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
+
+# Build release artifacts (matches the build-output Docker target)
+DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
+```
+
+The compiled userscript files appear in `./artifacts/`:
+
+```text
+artifacts/disable-amp.user.js
+artifacts/disable-amp.meta.js
+```
+
 ## Common Tasks
 
 ### Change Userscript Match Patterns
@@ -294,13 +318,11 @@ files under `locales/`. Review the diff carefully before committing.
 
 ### Bump Package Version
 
-Use the project script when a task requires a patch version bump:
-
-```sh
-pnpm run increment
-```
-
-This mutates `package.json`. It does not create a git tag.
+Release versions are driven by `CHANGELOG.md`. The `prepare-release.yml`
+workflow opens a release-bump PR via `create-release-pr.yml`, and
+`publish-release.yml` injects the version from the changelog tag into
+`package.json` at build time. Manual version bumps with `pnpm run increment`
+are no longer the primary mechanism.
 
 ### Refresh Browserslist Data
 
