@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 - `*/articleAmp/*` pattern for AMP pages [#122].
 
+[1.0.75]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...v1.0.75
 [#122]: https://github.com/AdguardTeam/DisableAMP/issues/122
 
 ## [1.0.74] - 2026-05-04
