@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Added
 
+- `*/articleAmp/*` pattern for AMP pages [#122].
+
 ### Changed
 
 ### Deprecated
@@ -21,13 +23,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Security
 
-## [1.0.75] - 2026-06-24
-
-### Added
-
-- `*/articleAmp/*` pattern for AMP pages [#122].
-
-[1.0.75]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...v1.0.75
+[Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...HEAD
 [#122]: https://github.com/AdguardTeam/DisableAMP/issues/122
 
 ## [1.0.74] - 2026-05-04
@@ -36,7 +32,6 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 - `/lite/` pattern for AMP pages [#124].
 
-[Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...HEAD
 [1.0.74]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.67...v1.0.74
 [#124]: https://github.com/AdguardTeam/DisableAMP/issues/124
 
