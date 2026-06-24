@@ -98,10 +98,10 @@ jobs:
       contents: write
       id-token: write
 
-  notify:
-    name: Notify
+  notify-success:
+    name: Notify (success)
     needs: [tag, mirror-and-release, deploy-static]
-    if: ${{ always() && needs.mirror-and-release.result == 'success' }}
+    if: ${{ needs.deploy-static.result == 'success' && needs.mirror-and-release.result == 'success' }}
     runs-on: team-extensions
     steps:
       - name: Send Slack notification
@@ -110,3 +110,17 @@ jobs:
           channel: '#adguard-extension-vcs'
           message: ':white_check_mark: *ext-disable-amp* *${{ needs.tag.outputs.tag }}* deployed to userscripts.adtidy.org + GitHub Release — <${{ needs.mirror-and-release.outputs.release-url }}|release> | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>'
           color: good
+
+  notify-failure:
+    name: Notify (failure)
+    needs: [tag, mirror-and-release, deploy-static]
+    # `tag` must succeed so we have a version to report.
+    if: ${{ always() && needs.tag.result == 'success' && (needs.deploy-static.result != 'success' || needs.mirror-and-release.result != 'success') }}
+    runs-on: team-extensions
+    steps:
+      - name: Send Slack notification
+        uses: AdGuardSoftwareLimited/actions/actions/slack@master
+        with:
+          channel: '#adguard-extension-vcs'
+          message: ':cross-mark: *ext-disable-amp* *${{ needs.tag.outputs.tag }}* deploy failed (deploy: ${{ needs.deploy-static.result }}, release: ${{ needs.mirror-and-release.result }}) — <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>'
+          color: danger
