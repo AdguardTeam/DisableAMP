@@ -47,7 +47,12 @@ jobs:
         run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
 
       - name: Build release artifacts
+        if: ${{ !contains(needs.tag.outputs.tag, '-beta') }}
         run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
+
+      - name: Build beta artifacts
+        if: ${{ contains(needs.tag.outputs.tag, '-beta') }}
+        run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-beta-output --output ./artifacts .
 
       - name: Upload userscript artifacts
         uses: actions/upload-artifact@v7
