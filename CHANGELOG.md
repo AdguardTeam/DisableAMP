@@ -21,13 +21,16 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Security
 
+## [1.0.75] - 2026-06-24
+
 ## [1.0.74] - 2026-05-04
 
 ### Added
 
 - `/lite/` pattern for AMP pages [#124].
 
-[Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...HEAD
+[Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.75...HEAD
+[1.0.75]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...v1.0.75
 [1.0.74]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.67...v1.0.74
 [#124]: https://github.com/AdguardTeam/DisableAMP/issues/124
 
