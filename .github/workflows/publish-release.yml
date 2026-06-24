@@ -71,11 +71,6 @@ jobs:
       team: extensions
       deployer-module: ${{ contains(needs.tag.outputs.tag, '-beta') && 'disable-amp-beta' || 'disable-amp-release' }}
       artifact-pattern: userscript
-      # The deployer-module already routes to the channel-specific path
-      # (e.g. /beta/disable-amp/1.0/). The static filenames on the server are
-      # always `disable-amp.user.js` / `disable-amp.meta.js`, matching the
-      # download/update URLs in meta.settings.js. Using channel-prefixed names
-      # (e.g. `disable-amp-beta.user.js`) is rejected by the deployer (400).
       file-mappings: '{"disable-amp.user.js": "disable-amp.user.js", "disable-amp.meta.js": "disable-amp.meta.js"}'
       environment: ${{ contains(needs.tag.outputs.tag, '-beta') && 'beta-static' || 'production-static' }}
     # `contents: read` — download artifact only
