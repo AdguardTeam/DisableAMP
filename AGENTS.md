@@ -73,7 +73,7 @@ Babel, a custom metadata plugin, and locale files to generate installable
 │   ├── metadata.test.ts         # Generated metadata regression checks
 │   ├── e2e/                     # Direct built-userscript browser tests
 │   └── wrapper/                 # userscripts-wrapper integration tests
-├── bamboo-specs/                # CI build and deployment specs
+├── .github/workflows/           # GitHub Actions CI/CD workflows
 ├── build/                       # Generated artifacts, ignored by git
 ├── webpack.config.js            # Webpack build for dev, beta, release
 ├── metadata.plugin.js           # Custom userscript metadata generator
@@ -93,6 +93,11 @@ Babel, a custom metadata plugin, and locale files to generate installable
 └── CHANGELOG.md                 # Release history
 ```
 
+> **Repository note**: This repo is private at
+> `AdGuardSoftwareLimited/ext-disable-amp`. A public mirror is automatically
+> synced to `AdguardTeam/DisableAMP` on every push to `master` via the
+> `mirror.yml` workflow.
+
 ## Build And Test Commands
 
 - `pnpm run dev` builds a development userscript into `build/dev`.
@@ -108,8 +113,6 @@ Babel, a custom metadata plugin, and locale files to generate installable
   `USERSCRIPTS_WRAPPER_DIR`.
 - `pnpm run locales:download` downloads translations from Twosky/Crowdin.
 - `pnpm run locales:upload` uploads base translations to Twosky/Crowdin.
-- `pnpm run increment` bumps the patch version in `package.json` without a git
-  tag.
 
 ## Contribution Instructions
 
@@ -363,5 +366,5 @@ and AI agents that consume project documentation.
   not reorder unrelated locale fields or exclude entries.
 - Preserve Keep a Changelog style in `CHANGELOG.md` and reference related issue
   numbers when known.
-- Use `pnpm run increment` for patch version bumps when a task requires a
-  package version update.
+- Release versions are driven by `CHANGELOG.md` via `tag-from-changelog.yml`;
+  the version is injected into `package.json` at build time.

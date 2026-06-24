@@ -1,0 +1,37 @@
+name: CI
+
+description: Lints, tests, and builds on pull requests and pushes to master.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Lint, test, build
+    runs-on: team-extensions
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Build and test via Docker
+        run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
+
+      - name: Build release artifacts
+        run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
+
+      - name: Upload userscript
+        uses: actions/upload-artifact@v7
+        with:
+          name: disable-amp.user.js
+          path: artifacts/disable-amp.user.js
+          archive: false
+
+      - name: Upload metadata
+        uses: actions/upload-artifact@v7
+        with:
+          name: disable-amp.meta.js
+          path: artifacts/disable-amp.meta.js
+          archive: false

@@ -18,6 +18,10 @@ Depending on the page, the script can:
 - Redirect Yandex Turbo pages to their original URL.
 - Remove visible AMP indicators from links after replacing them.
 
+> **Repository**: Development happens in the private repo
+> `AdGuardSoftwareLimited/ext-disable-amp`. A public mirror is available at
+> [`AdguardTeam/DisableAMP`](https://github.com/AdguardTeam/DisableAMP).
+
 ## Table Of Contents
 
 - [Installation](#installation)
