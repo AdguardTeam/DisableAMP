@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Security
 
+## [1.0.76] - 2026-06-24
+
 ## [1.0.76-beta.0] - 2026-06-24
 
 ## [1.0.76-beta.0] - 2026-06-24
@@ -35,7 +37,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Security
 
-[Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...HEAD
+[Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76...HEAD
+[1.0.76]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76
 [1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76-beta.0
 [1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76-beta.0
 [1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76-beta.0
