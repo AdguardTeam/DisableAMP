@@ -5,6 +5,8 @@ import {
     LITE_URL,
     NO_MARKER_URL,
     NO_CANONICAL_URL,
+    ARTICLEAMP_URL,
+    ARTICLEAMP_CANONICAL_URL,
     expectUrlToStay,
     routeFixtures,
 } from './fixtures';
@@ -54,5 +56,13 @@ test.describe('Disable AMP direct userscript smoke', () => {
         await injectUserscript(page);
 
         await expectUrlToStay(page, NO_CANONICAL_URL);
+    });
+
+    test('redirects /articleAmp/ AMP page to canonical URL', async ({ page }) => {
+        await page.goto(ARTICLEAMP_URL);
+        await injectUserscript(page);
+
+        await page.waitForURL(ARTICLEAMP_CANONICAL_URL);
+        await expect(page).toHaveURL(ARTICLEAMP_CANONICAL_URL);
     });
 });

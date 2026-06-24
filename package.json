@@ -2,7 +2,6 @@
     "name": "disable-amp",
     "author": "adguard@adguard.com",
     "license": "LGPL-3.0",
-    "packageManager": "pnpm@10.33.2",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/AdGuardSoftwareLimited/ext-disable-amp.git",
@@ -26,6 +25,10 @@
         "test:wrapper": "playwright test tests/wrapper",
         "locales:download": "LOCALES=DOWNLOAD node locales.js",
         "locales:upload": "LOCALES=UPLOAD node locales.js"
+    },
+    "engines": {
+        "node": ">=22",
+        "pnpm": ">=10.33.4 <11"
     },
     "browserslist": [
         "ie 11"

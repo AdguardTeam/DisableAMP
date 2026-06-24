@@ -30,6 +30,7 @@
 // @include      https://*/*/articleViewAmp*
 // @include      https://*/*/amp_articleshow/*
 // @include      https://*/*/lite/
+// @include      https://*/articleAmp/*
 // @include      https://*/*/?noamp=*
 // @exclude
 // @run-at       document-end

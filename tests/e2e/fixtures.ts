@@ -6,6 +6,8 @@ export const CANONICAL_URL = `${BASE_URL}/article/test/`;
 export const LITE_URL = `${BASE_URL}/article/test/lite/`;
 export const NO_MARKER_URL = `${BASE_URL}/article/no-marker/lite/`;
 export const NO_CANONICAL_URL = `${BASE_URL}/article/no-canonical/lite/`;
+export const ARTICLEAMP_URL = `${BASE_URL}/articleAmp/20120802443424/`;
+export const ARTICLEAMP_CANONICAL_URL = `${BASE_URL}/article/20120802443424/`;
 export const UNRELATED_URL = `${BASE_URL}/plain/`;
 
 /**
@@ -43,6 +45,11 @@ const canonicalPage = html('', '<h1>Canonical page</h1>');
 const ampPage = html(`${ampScript}${canonical(CANONICAL_URL)}`, '<h1>AMP lite page</h1>');
 const noMarkerPage = html(canonical(CANONICAL_URL), '<h1>No AMP marker</h1>');
 const noCanonicalPage = html(ampScript, '<h1>No canonical</h1>');
+const articleAmpCanonicalPage = html('', '<h1>articleAmp canonical page</h1>');
+const articleAmpPage = html(
+    `${ampScript}${canonical(ARTICLEAMP_CANONICAL_URL)}`,
+    '<h1>articleAmp page</h1>',
+);
 
 /**
  * Registers deterministic page fixtures for Disable AMP browser tests.
@@ -69,6 +76,10 @@ export const routeFixtures = async (page: Page, options: FixtureOptions = {}): P
             body = noMarkerPage.replace('<head>', `<head>${scriptTag}`);
         } else if (url.pathname === '/article/no-canonical/lite/') {
             body = noCanonicalPage.replace('<head>', `<head>${scriptTag}`);
+        } else if (url.pathname === '/articleAmp/20120802443424/') {
+            body = articleAmpPage.replace('<head>', `<head>${scriptTag}`);
+        } else if (url.pathname === '/article/20120802443424/') {
+            body = articleAmpCanonicalPage.replace('<head>', `<head>${scriptTag}`);
         } else {
             body = html(scriptTag, '<h1>Unrelated page</h1>');
         }

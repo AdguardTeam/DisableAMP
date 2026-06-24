@@ -1,9 +1,22 @@
 # Disable AMP by AdGuard
 
 Disable AMP by AdGuard is a userscript that opens supported AMP and Yandex
-Turbo pages as their original non-AMP pages. It is for people who browse with
-AdGuard for Android or a userscript manager and prefer canonical website pages
-instead of AMP wrappers.
+Turbo pages as their original non-AMP pages.
+
+## Description
+
+Disable AMP is for people who browse with AdGuard for Android or a browser
+userscript manager and prefer canonical website pages instead of AMP wrappers.
+AMP pages often wrap publisher content in a faster but reduced version of the
+original page. This userscript detects supported AMP or Turbo pages and sends
+the browser to the canonical page published by the site owner.
+
+Depending on the page, the script can:
+
+- Rewrite AMP links before you click them.
+- Redirect an AMP page to its canonical URL after the page loads.
+- Redirect Yandex Turbo pages to their original URL.
+- Remove visible AMP indicators from links after replacing them.
 
 > **Repository**: Development happens in the private repo
 > `AdGuardSoftwareLimited/ext-disable-amp`. A public mirror is available at
@@ -11,8 +24,6 @@ instead of AMP wrappers.
 
 ## Table Of Contents
 
-- [What It Does](#what-it-does)
-- [Key Concepts](#key-concepts)
 - [Installation](#installation)
     - [AdGuard For Android](#adguard-for-android)
     - [Userscript Managers](#userscript-managers)
@@ -22,32 +33,6 @@ instead of AMP wrappers.
 - [Usage Notes](#usage-notes)
 - [Troubleshooting](#troubleshooting)
 - [Documentation](#documentation)
-
-## What It Does
-
-AMP pages often wrap publisher content in a faster but reduced version of the
-original page. Disable AMP detects supported AMP or Turbo pages and sends the
-browser to the canonical page published by the site owner.
-
-Depending on the page, the script can:
-
-- Rewrite AMP links before you click them.
-- Redirect an AMP page to its canonical URL after the page loads.
-- Redirect Yandex Turbo pages to their original URL.
-- Remove visible AMP indicators from links after replacing them.
-
-## Key Concepts
-
-- **Userscript**: A small script installed in AdGuard for Android or a browser
-  userscript manager. It runs only on URLs matched by its metadata.
-- **AMP page**: A page that loads AMP runtime scripts from
-  `cdn.ampproject.org` and usually points to a canonical page.
-- **Canonical page**: The original non-AMP URL declared by the publisher in the
-  page metadata.
-- **Yandex Turbo page**: A Yandex-hosted lightweight version of a page that can
-  point back to an original URL.
-- **Stable and beta channels**: Stable is recommended for normal use. Beta is
-  useful when testing upcoming fixes.
 
 ## Installation
 

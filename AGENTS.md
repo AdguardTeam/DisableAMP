@@ -33,11 +33,13 @@ Babel, a custom metadata plugin, and locale files to generate installable
 
 ## Technical Context
 
-- **Language/Version**: JavaScript. No `engines` field is declared in
-  `package.json`; the Docker build image is `adguard/node-ssh:22.17--0`.
+- **Language/Version**: JavaScript. `package.json` declares `node >=22` and
+  `pnpm >=10.33.4 <11` in its `engines` field.
 - **Primary Dependencies**: Webpack 5, Babel, ESLint with Airbnb base config,
-  `copy-webpack-plugin`, `clean-webpack-plugin`, `replace-in-file`, `glob`,
-  `cp-file`, `fs-extra`, `axios`, and `form-data`.
+  TypeScript (test files only), Playwright (`@playwright/test`),
+  `copy-webpack-plugin`, `clean-webpack-plugin`, `html-webpack-plugin`,
+  `replace-in-file`, `glob`, `cp-file`, `fs-extra`, `axios`, `form-data`,
+  `husky`, and `tsx`.
 - **Storage**: No runtime storage. Build-time configuration and translations
   are stored in repository files.
 - **Testing**: Metadata checks and Playwright e2e tests are configured in
@@ -102,7 +104,8 @@ Babel, a custom metadata plugin, and locale files to generate installable
 - `pnpm run beta` builds a beta userscript into `build/beta`.
 - `pnpm run release` builds a production userscript into `build/release`.
 - `pnpm run watch` runs the development build in watch mode.
-- `pnpm run lint` runs ESLint against `src/`.
+- `pnpm run lint` runs ESLint against `src/`, `playwright.config.ts`, and
+  `tests/**/*.ts`.
 - `pnpm run test` runs metadata and direct browser smoke tests.
 - `pnpm run test:metadata` checks generated metadata patterns.
 - `pnpm run test:e2e` runs direct Playwright browser smoke tests.
@@ -292,8 +295,10 @@ supply chain risks, and long-term maintenance costs.
 
 **Known exclusions** (to be fixed):
 
-- `package.json` currently uses caret ranges for all dev dependencies. Future
-  dependency updates should move toward exact pinned versions.
+- `package.json` uses caret ranges for most dev dependencies; a few (e.g.,
+  `@playwright/test`, `typescript`, `husky`, `tsx`, `eslint-plugin-jsdoc`) are
+  pinned exactly. Future dependency updates should move toward exact pinned
+  versions.
 
 ### Configuration & Documentation
 

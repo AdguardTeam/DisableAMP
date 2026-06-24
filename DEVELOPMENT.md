@@ -37,18 +37,16 @@ Developer guide for setting up, running, and changing Disable AMP locally.
 
 ### Required Tools
 
-- Node.js 22.17.x is the CI baseline. The Docker build image is
-  `adguard/node-ssh:22.22--0`.
-- Node.js 24.14.0 is also verified locally in this workspace on 2026-05-04.
-- pnpm 10.x is required. The exact version is pinned in `package.json`.
+- Node.js 22.22 is the CI baseline.
+- pnpm >=10.33.4 and <11 is required.
 - A userscript host is needed for manual browser checks. Use AdGuard for
   Android, Violentmonkey, Tampermonkey, Greasemonkey, or another compatible
   userscript host.
 - Docker is optional for local development, but useful when reproducing the CI
   build stages from `Dockerfile`.
 
-There is no `.nvmrc`, `.node-version`, or `engines` field in `package.json`.
-Prefer Node.js 22.17.x when matching CI behavior exactly.
+`package.json` declares an `engines` field requiring `node >=22` and
+`pnpm >=10.33.4 <11`.
 
 ### Optional Tools
 
@@ -117,39 +115,20 @@ locale changes.
 
 ### Project Layout
 
-Runtime code lives in `src/`:
-
-- `src/index.js`: entry point and page routing.
-- `src/google-amp.js`: Google AMP link cleanup and AMP redirects.
-- `src/yandex-turbo.js`: Yandex Turbo canonical redirects.
-- `src/utils.js`: shared DOM and URL helpers.
-- `src/exclusions.js`: generated userscript `@exclude` URL patterns.
-
-Build and metadata code lives at the repository root:
-
-- `webpack.config.js`: build target selection and output paths.
-- `metadata.plugin.js`: metadata file generation and metadata concatenation.
-- `meta.settings.js`: metadata field values per build channel.
-- `meta.template.js`: userscript header template and match patterns.
-- `locales.js`: Twosky/Crowdin translation download and upload script.
+The full module tree with per-file descriptions is in
+[Project Structure](AGENTS.md#project-structure) in `AGENTS.md`. For local
+development, note the split between runtime code in `src/` and build/metadata
+tooling at the repository root.
 
 Generated output under `build/` is ignored by git. Do not edit generated files;
 change source files and rebuild instead.
 
 ### Available Commands
 
-- `pnpm run dev`: builds the development userscript into `build/dev`.
-- `pnpm run beta`: builds a minified beta userscript into `build/beta`.
-- `pnpm run release`: builds a minified release userscript into `build/release`.
-- `pnpm run watch`: runs the development build in watch mode.
-- `pnpm run lint`: runs ESLint against `src/`.
-- `pnpm run test`: runs metadata and direct browser smoke tests.
-- `pnpm run test:metadata`: verifies generated userscript metadata patterns.
-- `pnpm run test:e2e`: runs direct Playwright browser smoke tests.
-- `pnpm run test:wrapper`: runs userscripts-wrapper e2e tests. It requires
-  `USERSCRIPTS_WRAPPER_DIR`.
-- `pnpm run locales:download`: downloads translations from Twosky/Crowdin.
-- `pnpm run locales:upload`: uploads base translations to Twosky/Crowdin.
+The canonical build, test, and lint command reference is
+[Build And Test Commands](AGENTS.md#build-and-test-commands) in `AGENTS.md`.
+Treat it as the single source of truth for script names; the workflow steps
+below call the same commands inline where a step needs them.
 
 ### Userscript Metadata Model
 
@@ -222,31 +201,14 @@ const releaseChannels = {
 
 ### Verification
 
-Run these commands before finishing code or metadata changes:
+The mandatory verification path and manual-page testing guidance live in
+[Contribution Instructions](AGENTS.md#contribution-instructions) and the
+[Testing](AGENTS.md#testing) guidelines in `AGENTS.md`; follow them from there
+to keep command references in one place. No formatter or type checker is
+configured, so rely on ESLint plus the Webpack build.
 
-```sh
-pnpm run lint
-pnpm run dev
-pnpm run test
-```
-
-Run wrapper-level tests when a local userscripts-wrapper checkout is available:
-
-```sh
-pnpm run dev
-USERSCRIPTS_WRAPPER_DIR=/Volumes/dev/userscripts-wrapper pnpm run test:wrapper
-```
-
-`pnpm run lint`, `pnpm run dev`, `pnpm run test`,
-`pnpm run test:wrapper`, `pnpm run beta`, and `pnpm run release` were verified
-in this workspace on 2026-05-04.
-
-No formatter or type checker command is configured. Avoid formatting-only churn
-and rely on ESLint plus the Webpack build for automated checks.
-
-For behavior changes, also manually test representative pages in a userscript
-host. Pick pages that match the touched path: Google Search, Google News,
-Google Images, generic AMP pages, or Yandex Turbo pages.
+For wrapper-level e2e tests, set up the local environment described in
+[Wrapper Test Needs Environment](#wrapper-test-needs-environment).
 
 ### Contribution Flow
 
@@ -257,7 +219,9 @@ Google Images, generic AMP pages, or Yandex Turbo pages.
 - Update `CHANGELOG.md` for user-visible behavior changes.
 - Update `README.md` if install links, build commands, or user-facing behavior
   change.
-- Run `pnpm run lint`, `pnpm run dev`, and `pnpm run test` before opening a PR.
+- Run the mandatory verification commands listed in
+  [Contribution Instructions](AGENTS.md#contribution-instructions) before
+  opening a PR.
 - Mention any manual browser checks performed in the PR or final task summary.
 
 ### Running the Full CI Pipeline Locally
@@ -368,10 +332,10 @@ npm install --global "pnpm@${PNPM_VERSION}"
 repository still uses Yarn, so build it there first, then pass its path:
 
 ```sh
-cd /Volumes/dev/userscripts-wrapper && yarn build
-cd /Volumes/dev/wt/disable-amp/fix-AG-53935
+cd /path/to/userscripts-wrapper && yarn build
+cd /path/to/disable-amp
 pnpm run dev
-USERSCRIPTS_WRAPPER_DIR=/Volumes/dev/userscripts-wrapper pnpm run test:wrapper
+USERSCRIPTS_WRAPPER_DIR=/path/to/userscripts-wrapper pnpm run test:wrapper
 ```
 
 ### Locales Option Missing
