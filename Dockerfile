@@ -70,3 +70,17 @@ FROM scratch AS build-release-output
 COPY --from=build-release /workdir/build/release/variables.txt /artifacts/variables.txt
 COPY --from=build-release /workdir/build/release/disable-amp.meta.js /artifacts/disable-amp.meta.js
 COPY --from=build-release /workdir/build/release/disable-amp.user.js /artifacts/disable-amp.user.js
+
+# =============================================================================
+# Increment version
+# =============================================================================
+
+FROM source-deps AS increment
+RUN --mount=type=cache,target=/pnpm-store,id=disable-amp-pnpm \
+    pnpm config set store-dir /pnpm-store && \
+    pnpm run increment && \
+    mkdir -p /out/modified && \
+    cp package.json /out/modified/
+
+FROM scratch AS increment-output
+COPY --from=increment /out/ /

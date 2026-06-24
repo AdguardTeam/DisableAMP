@@ -4,8 +4,6 @@ plan:
   project-key: ADGEXT
   key: DAINCRSPECS
   name: disable-amp - increment version
-variables:
-  dockerNode: adguard/node-ssh:22.11--0
 
 stages:
   - Increment:
@@ -16,10 +14,8 @@ stages:
 
 Increment:
   key: INCR
-  docker:
-    image: ${bamboo.dockerNode}
-    volumes:
-      ${system.PNPM_DIR}: "${bamboo.cachePnpm}"
+  other:
+    clean-working-dir: true
   tasks:
     - checkout:
         force-clean-build: 'true'
@@ -27,19 +23,32 @@ Increment:
         interpreter: SHELL
         scripts:
           - |-
-            set -x
-            set -e
+            set -ex
 
             # Fix mixed logs
             exec 2>&1
 
-            pnpm config set store-dir "${bamboo.cachePnpm}"
-            pnpm run increment
+            export DOCKER_BUILDKIT=1
+
+            docker build \
+              --file Dockerfile \
+              --progress plain \
+              --target increment-output \
+              --output type=local,dest=output \
+              .
+
+            # Copy modified package.json back to working tree for VCS commit
+            cp output/modified/package.json .
     - any-task:
         plugin-key: com.atlassian.bamboo.plugins.vcs:task.vcs.commit
         configuration:
           commitMessage: 'skipci: Automatic increment build number'
           selectedRepository: defaultRepository
+  final-tasks:
+    - script:
+        interpreter: SHELL
+        scripts:
+          - "./bamboo-specs/scripts/cleanup.sh"
   requirements:
     - extension: 'true'
 
