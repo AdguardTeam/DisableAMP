@@ -16,11 +16,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Build and test via Docker
-        run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
-
-      - name: Build release artifacts
-        run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
+      - name: Build, lint, and test via Docker
+        run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output --output ./artifacts .
 
       - name: Upload userscript
         uses: actions/upload-artifact@v7
