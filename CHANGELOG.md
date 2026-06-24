@@ -23,11 +23,11 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [1.0.76] - 2026-06-24
 
-## [1.0.76-beta.0] - 2026-06-24
+### Added
 
-## [1.0.76-beta.0] - 2026-06-24
+- `*/articleAmp/*` pattern for AMP pages [#122].
 
-## [1.0.76-beta.0] - 2026-06-24
+### Security
 
 ## [1.0.76-beta.0] - 2026-06-24
 
@@ -39,9 +39,6 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 [Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76...HEAD
 [1.0.76]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76
-[1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76-beta.0
-[1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76-beta.0
-[1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76-beta.0
 [1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...v1.0.76-beta.0
 [#122]: https://github.com/AdguardTeam/DisableAMP/issues/122
 
