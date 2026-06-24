@@ -33,14 +33,16 @@ build:
 
 | Job | Beta tag | Stable tag |
 | --- | --- | --- |
-| `deploy-static-beta` | ✅ runs | ⊘ skipped |
-| `deploy-static-release` | ⊘ skipped | ✅ runs |
-| `gh-release` | prerelease = `true` | prerelease = `false` |
+| `deploy-static` | module = `disable-amp-beta`, env = `beta-static` | module = `disable-amp-release`, env = `production-static` |
+| `mirror-and-release` | prerelease = `true` | prerelease = `false` |
 
-The `deploy-static-beta` job uploads to the Deployer module `disable-amp-beta`;
-`deploy-static-release` uploads to `disable-amp-release`. Both use the
-`deploy-to-static.yml` reusable workflow targeting the `userscripts.adtidy.org`
-environment.
+The `deploy-static` job uploads to `userscripts.adtidy.org` via the
+`deploy-to-static.yml` reusable workflow; the Deployer module and environment
+are selected dynamically from the tag.
+
+GitHub Releases are created **only** on the public mirror
+(`AdguardTeam/DisableAMP`) by the `mirror-and-release` job, which also mirrors
+the repo (including the tag) before creating the release.
 
 CI/CD pipeline details live in `.github/workflows/`; this document only
 records the production deployment configuration and runtime dependencies.

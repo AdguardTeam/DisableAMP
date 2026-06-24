@@ -2,7 +2,8 @@ name: Publish release
 
 description: >-
   Tags the release commit, builds, tests, deploys the compiled userscript to
-  userscripts.adtidy.org and to a GitHub Release, then notifies Slack.
+  userscripts.adtidy.org and to a GitHub Release, mirrors the release to the
+  public repo (AdguardTeam/DisableAMP), then notifies Slack.
   Beta tags (e.g. v1.0.0-beta.1) deploy only to the beta channel.
   Stable tags (e.g. v1.0.0) deploy only to the release channel.
 
@@ -71,28 +72,36 @@ jobs:
     permissions:
       contents: read
 
-  gh-release:
+  mirror-and-release:
+    # Mirrors the repo (including the tag) to the public mirror and
+    # creates a matching GitHub Release on AdguardTeam/DisableAMP.
     needs: [tag, build]
-    uses: AdGuardSoftwareLimited/actions/.github/workflows/create-gh-release.yml@master
+    uses: AdGuardSoftwareLimited/actions/.github/workflows/mirror-and-release.yml@master
     with:
-      tag_name: ${{ needs.tag.outputs.tag }}
-      body: ${{ needs.tag.outputs.changelog }}
+      team: extensions
+      target_repo: AdguardTeam/DisableAMP
+      tag: ${{ needs.tag.outputs.tag }}
+      changelog: ${{ needs.tag.outputs.changelog }}
       artifact_name: userscript
       prerelease: ${{ contains(needs.tag.outputs.tag, '-beta') }}
-      team: extensions
-    # `contents: write` — create GitHub Release with assets
+    secrets: inherit
+    # `actions: write` — disable workflows in the public mirror
+    # `contents: write` — create GitHub Release on public repo
+    # `id-token: write` — Octopass token for mirror push
     permissions:
+      actions: write
       contents: write
+      id-token: write
 
   notify:
     name: Notify
-    needs: [tag, gh-release, deploy-static]
-    if: ${{ always() && needs.gh-release.result == 'success' }}
+    needs: [tag, mirror-and-release, deploy-static]
+    if: ${{ always() && needs.mirror-and-release.result == 'success' }}
     runs-on: team-extensions
     steps:
       - name: Send Slack notification
         uses: AdGuardSoftwareLimited/actions/actions/slack@master
         with:
           channel: '#adguard-extension-vcs'
-          message: ':white_check_mark: *ext-disable-amp* *${{ needs.tag.outputs.tag }}* deployed to userscripts.adtidy.org + GitHub Release — <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|view run>'
+          message: ':white_check_mark: *ext-disable-amp* *${{ needs.tag.outputs.tag }}* deployed to userscripts.adtidy.org + GitHub Release — <${{ needs.mirror-and-release.outputs.release-url }}|release> | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>'
           color: good

@@ -96,7 +96,8 @@ Babel, a custom metadata plugin, and locale files to generate installable
 > **Repository note**: This repo is private at
 > `AdGuardSoftwareLimited/ext-disable-amp`. A public mirror is automatically
 > synced to `AdguardTeam/DisableAMP` on every push to `master` via the
-> `mirror.yml` workflow.
+> `mirror.yml` workflow. GitHub Releases are published on the public mirror
+> by the `mirror-and-release` job in `publish-release.yml`.
 
 ## Build And Test Commands
 
