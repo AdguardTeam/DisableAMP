@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Added
 
+- `imnews.imbc.com` to supported sites [#125].
+
 ### Changed
 
 ### Deprecated
@@ -40,6 +42,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 [Unreleased]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76...HEAD
 [1.0.76]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.76-beta.0...v1.0.76
 [1.0.76-beta.0]: https://github.com/AdguardTeam/DisableAMP/compare/v1.0.74...v1.0.76-beta.0
+[#125]: https://github.com/AdguardTeam/DisableAMP/issues/125
 [#122]: https://github.com/AdguardTeam/DisableAMP/issues/122
 
 ## [1.0.74] - 2026-05-04
