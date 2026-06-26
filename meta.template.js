@@ -11,6 +11,7 @@
 // @include      https://news.google.*/*
 // @include      https://yandex.*/*
 // @include      https://*.turbopages.org/*
+// @include      https://imnews.imbc.com/*
 // @include      https://*/amp/*
 // @include      https://*/*/amp/*
 // @include      https://amp.*
