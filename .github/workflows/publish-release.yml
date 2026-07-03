@@ -70,8 +70,7 @@ jobs:
     with:
       team: extensions
       deployer-module: ${{ contains(needs.tag.outputs.tag, '-beta') && 'disable-amp-beta' || 'disable-amp-release' }}
-      artifact-pattern: userscript
-      file-mappings: '{"disable-amp.user.js": "disable-amp.user.js", "disable-amp.meta.js": "disable-amp.meta.js"}'
+      artifact-name: userscript
       environment: ${{ contains(needs.tag.outputs.tag, '-beta') && 'beta-static' || 'production-static' }}
     # `contents: read` — download artifact only
     permissions:
