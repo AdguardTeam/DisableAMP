@@ -1,15 +1,13 @@
-import path from 'path';
 import { test, expect } from '@playwright/test';
 import {
     CANONICAL_URL,
     LITE_URL,
     UNRELATED_URL,
+    USERSCRIPT_PATH,
     expectUrlToStay,
     routeFixtures,
 } from '../e2e/fixtures';
 import { createWrapperBundle } from './wrapper-bundle';
-
-const USERSCRIPT_PATH = path.resolve(__dirname, '../../build/dev/disable-amp.user.js');
 
 test.describe('Disable AMP userscripts-wrapper e2e', () => {
     let wrapperScript: string;

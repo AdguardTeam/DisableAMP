@@ -1,4 +1,7 @@
+import path from 'path';
 import { expect, type Page, type Route } from '@playwright/test';
+
+export const USERSCRIPT_PATH = path.resolve(__dirname, '../../build/dev/disable-amp.user.js');
 
 export const BASE_URL = 'https://example.test';
 
@@ -9,6 +12,11 @@ export const NO_CANONICAL_URL = `${BASE_URL}/article/no-canonical/lite/`;
 export const ARTICLEAMP_URL = `${BASE_URL}/articleAmp/20120802443424/`;
 export const ARTICLEAMP_CANONICAL_URL = `${BASE_URL}/article/20120802443424/`;
 export const UNRELATED_URL = `${BASE_URL}/plain/`;
+
+export const GOOGLE_SEARCH_URL = 'https://www.google.test/search?q=liberoquotidiano';
+export const LIBERO_ARTICLE_URL = 'https://www.liberoquotidiano.test/news/italia/1234567/articolo.html';
+export const LIBERO_AMP_URL = 'https://amp.liberoquotidiano.test/news/italia/1234567/articolo.html';
+export const LIBERO_GOOGLE_AMP_URL = 'https://www.google.test/amp/s/www.liberoquotidiano.test/news/italia/1234567/articolo.html';
 
 /**
  * Time to watch for unexpected redirects in stable-URL assertions.
@@ -50,6 +58,33 @@ const articleAmpPage = html(
     `${ampScript}${canonical(ARTICLEAMP_CANONICAL_URL)}`,
     '<h1>articleAmp page</h1>',
 );
+const googleSearchPage = html('', '<div id="results"></div>');
+const liberoArticlePage = html('', '<h1>Article page</h1>');
+
+/**
+ * Registers a stub for the AMP runtime script.
+ *
+ * @param page Playwright page to register routes on.
+ *
+ * @returns Promise that resolves after the route is registered.
+ */
+const routeAmpCdn = async (page: Page): Promise<void> => {
+    await page.route('https://cdn.ampproject.org/**', (route: Route) => route.fulfill({
+        contentType: 'application/javascript',
+        body: '',
+    }));
+};
+
+/**
+ * Injects the generated userscript into the current page.
+ *
+ * @param page Playwright page to inject into.
+ *
+ * @returns Promise that resolves after the script tag is added.
+ */
+export const injectUserscript = async (page: Page): Promise<void> => {
+    await page.addScriptTag({ path: USERSCRIPT_PATH });
+};
 
 /**
  * Registers deterministic page fixtures for Disable AMP browser tests.
@@ -90,14 +125,31 @@ export const routeFixtures = async (page: Page, options: FixtureOptions = {}): P
         });
     });
 
-    await page.route('https://cdn.ampproject.org/**', (route: Route) => route.fulfill({
-        contentType: 'application/javascript',
-        body: '',
-    }));
+    await routeAmpCdn(page);
 
     await page.route(`${BASE_URL}/userscripts.js`, (route: Route) => route.fulfill({
         contentType: 'application/javascript',
         body: options.wrapperScript || '',
+    }));
+};
+
+/**
+ * Registers deterministic fixtures for a Google Search results page and the
+ * publisher article it links to.
+ *
+ * @param page Playwright page to register routes on.
+ *
+ * @returns Promise that resolves after all routes are registered.
+ */
+export const routeGoogleSearchFixtures = async (page: Page): Promise<void> => {
+    await page.route('https://www.google.test/**', (route: Route) => route.fulfill({
+        contentType: 'text/html',
+        body: googleSearchPage,
+    }));
+
+    await page.route('https://www.liberoquotidiano.test/**', (route: Route) => route.fulfill({
+        contentType: 'text/html',
+        body: liberoArticlePage,
     }));
 };
 

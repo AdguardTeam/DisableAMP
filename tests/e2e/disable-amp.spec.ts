@@ -1,5 +1,4 @@
-import path from 'path';
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import {
     CANONICAL_URL,
     LITE_URL,
@@ -8,21 +7,9 @@ import {
     ARTICLEAMP_URL,
     ARTICLEAMP_CANONICAL_URL,
     expectUrlToStay,
+    injectUserscript,
     routeFixtures,
 } from './fixtures';
-
-const USERSCRIPT_PATH = path.resolve(__dirname, '../../build/dev/disable-amp.user.js');
-
-/**
- * Injects the generated userscript into the current page.
- *
- * @param page Playwright page to inject into.
- *
- * @returns Promise that resolves after the script tag is added.
- */
-const injectUserscript = async (page: Page): Promise<void> => {
-    await page.addScriptTag({ path: USERSCRIPT_PATH });
-};
 
 test.describe('Disable AMP direct userscript smoke', () => {
     test.beforeEach(async ({ page }) => {
