@@ -31,6 +31,9 @@ build:
 - **Stable tags** (e.g. `v1.0.75`) — deploy only to the release channel
   and create a full GitHub Release.
 
+A manual run of Prepare release shows the requested tag in the Actions run
+list, for example `Prepare release v1.0.75-beta.1`.
+
 | Job | Beta tag | Stable tag |
 | --- | --- | --- |
 | `deploy-static` | module = `disable-amp-beta`, env = `beta-static` | module = `disable-amp-release`, env = `production-static` |
