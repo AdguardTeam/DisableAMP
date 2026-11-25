@@ -33,8 +33,8 @@ Babel, a custom metadata plugin, and locale files to generate installable
 
 ## Technical Context
 
-- **Language/Version**: JavaScript. `package.json` declares `node >=22` and
-  `pnpm >=10.33.4 <11` in its `engines` field.
+- **Language/Version**: JavaScript. `package.json` declares `node >=22.23.5`
+  and `pnpm >=10.33.4 <11` in its `engines` field.
 - **Primary Dependencies**: Webpack 5, Babel, ESLint with Airbnb base config,
   TypeScript (test files only), Playwright (`@playwright/test`),
   `copy-webpack-plugin`, `clean-webpack-plugin`, `html-webpack-plugin`,

@@ -27,7 +27,7 @@
         "locales:upload": "LOCALES=UPLOAD node locales.js"
     },
     "engines": {
-        "node": ">=22",
+        "node": ">=22.23.5",
         "pnpm": ">=10.33.4 <11"
     },
     "browserslist": [

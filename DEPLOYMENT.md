@@ -109,7 +109,7 @@ userscript runs entirely in the browser page context.
   to `${DEPLOYER_BASE_URL}/disable-amp-beta` and
   `${DEPLOYER_BASE_URL}/disable-amp-release` (org variable
   `DEPLOYER_BASE_URL`).
-- **Build container**: Docker stages use `adguard/node-ssh:22.22--0` and emit
+- **Build container**: Docker stages use `adguard/node-ssh:22.23--0` and emit
   artifacts from scratch output stages.
 
 There are no production databases, caches, queues, object storage clients, or

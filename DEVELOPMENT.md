@@ -37,7 +37,7 @@ Developer guide for setting up, running, and changing Disable AMP locally.
 
 ### Required Tools
 
-- Node.js 22.22 is the CI baseline.
+- Node.js 22.23.5 is the CI baseline.
 - pnpm >=10.33.4 and <11 is required.
 - A userscript host is needed for manual browser checks. Use AdGuard for
   Android, Violentmonkey, Tampermonkey, Greasemonkey, or another compatible
@@ -45,7 +45,7 @@ Developer guide for setting up, running, and changing Disable AMP locally.
 - Docker is optional for local development, but useful when reproducing the CI
   build stages from `Dockerfile`.
 
-`package.json` declares an `engines` field requiring `node >=22` and
+`package.json` declares an `engines` field requiring `node >=22.23.5` and
 `pnpm >=10.33.4 <11`.
 
 ### Optional Tools
